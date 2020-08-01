@@ -11,7 +11,15 @@ module.exports = {
     },
     plugins: ['prettier'],
     rules: {
-        'prettier/prettier': 'error',
-        'no-unused-vars': 'off',
+        'prettier/prettier': [
+            'error',
+            {
+                singleQuote: true,
+                trailingComma: 'es5',
+            },
+        ],
+        'no-console': 0,
+        'no-unused-vars': [0],
+        'no-irregular-whitespace': [0],
     },
 };
