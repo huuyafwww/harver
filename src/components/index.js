@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import Sidebar from '@components/sidebar/';
+
+const AppWrapper = styled.div``;
 
 export default class App extends Component {
     constructor(props) {
@@ -9,6 +11,10 @@ export default class App extends Component {
     }
 
     render() {
-        return <div></div>;
+        return (
+            <AppWrapper>
+                <Sidebar />
+            </AppWrapper>
+        );
     }
 }

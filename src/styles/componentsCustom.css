@@ -1,0 +1,22 @@
+.main-sidebar .sidebar-menu li div.nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 20px;
+    width: 100%;
+    letter-spacing: .3px;
+    color: #78828a;
+    text-decoration: none;
+}
+
+.main-sidebar .sidebar-menu li div.nav-link i {
+    width: 28px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.main-sidebar .sidebar-menu li div.nav-link span {
+    margin-top: 3px;
+    width: 100%;
+}
