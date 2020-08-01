@@ -6,15 +6,18 @@ const Config = {
         pcName: 'Harver',
         spName: 'Harv',
     },
-    menu: {
-        Dashboard: [
-            {
-                label: 'Home',
-                link: 'index',
-                icon: <FaHome />,
-            },
-        ],
-    },
+    menu: [
+        {
+            label: 'Dashboard',
+            isMenuItemHeader: true,
+        },
+        {
+            label: 'Home',
+            link: 'index',
+            icon: <FaHome />,
+            isMenuItemHeader: false,
+        },
+    ],
 };
 
 export { Config };

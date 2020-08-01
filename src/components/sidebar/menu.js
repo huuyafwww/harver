@@ -9,22 +9,19 @@ export default class SidebarMenu extends Component {
         this.state = {};
     }
 
-    getMenuItemHeader(HeaderName) {
-        return <li className="menu-header">{HeaderName}</li>;
-    }
-
-    getMenuItems(Items) {
-        return Object.keys(Items).map(key => {
-            const Item = Items[key];
-            return this.getMenuItem(Item, key);
-        });
+    getMenuItemHeader(Item, key) {
+        return (
+            <li key={key} className="menu-header">
+                {Item.label}
+            </li>
+        );
     }
 
     getMenuItem(Item, key) {
         return (
             <li key={key}>
                 <div className="nav-link" href={Item.link}>
-                    {Item.icon}
+                    <i className="far">{Item.icon}</i>
                     <span>{Item.label}</span>
                 </div>
             </li>
@@ -33,12 +30,10 @@ export default class SidebarMenu extends Component {
 
     getMenu() {
         const { Menu } = this.props;
-        return Object.keys(Menu).map(HeaderName => {
-            const Items = Menu[HeaderName];
-            return [
-                this.getMenuItemHeader(HeaderName),
-                this.getMenuItems(Items),
-            ];
+        return Menu.map((Item, key) => {
+            return Item.isMenuItemHeader
+                ? this.getMenuItemHeader(Item, key)
+                : this.getMenuItem(Item, key);
         });
     }
 
