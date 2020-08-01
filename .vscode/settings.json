@@ -1,0 +1,12 @@
+{
+    "files.watcherExclude": {
+        "**/public/**": true,
+        "**/node_modules/**":true,
+        "yarn.lock":true
+    },
+    "search.exclude": {
+        "**/public": true,
+        "**/node_modules":true,
+        "yarn.lock":true
+    }
+}
