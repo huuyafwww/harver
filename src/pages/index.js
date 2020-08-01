@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import '@styles';
-// import Components from '@components';
+import { getFileName } from '@helpers';
+import App from '@components';
 
-const IndexPage = () => (
+const page = getFileName(__filename);
+
+export default () => (
     <Link to="/">
-        {/* <Components /> */}
+        <App pageName={page} />
     </Link>
 );
-
-export default IndexPage;

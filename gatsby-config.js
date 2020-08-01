@@ -42,6 +42,8 @@ module.exports = {
                     '@components': 'src/components',
                     '@images': 'src/images',
                     '@styles': 'src/styles',
+                    '@helpers': 'src/helpers',
+                    '@config': 'src/config',
                     '@stores': 'src/stores',
                 },
                 extensions: ['js'],
