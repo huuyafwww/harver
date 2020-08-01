@@ -1,4 +1,6 @@
 # Develop Browser by Electron.
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhuuyafwww%2Fharver.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhuuyafwww%2Fharver?ref=badge_shield)
+
 
 ## Now 👨‍💻
 
@@ -32,3 +34,7 @@ I plan to switch this project to GatsbyJS💁‍♂️
 - [React Bootstrap](https://react-bootstrap.github.io/)
 - [Stisla](https://getstisla.com/)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhuuyafwww%2Fharver.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhuuyafwww%2Fharver?ref=badge_large)
