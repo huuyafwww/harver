@@ -1,30 +1,19 @@
-const { app, BrowserWindow } = require('electron');
+import { windowConfig, webPreferences, dialogConfig } from './config';
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const Config = require('electron-config');
 const path = require('path');
+const fs = require('fs');
 
 const isDev = () => {
     return !app.isPackaged;
 };
 
-const config = new Config({
-    defaults: {
-        bounds: {
-            width: 800,
-            height: 600,
-        },
-    },
-});
-
-const webPreferences = {
-    nodeIntegration: true,
-    webviewTag: false,
-    nodeIntegrationInWorker: true,
-};
+const electronConfig = new Config(windowConfig);
 
 let mainWindow;
 
 const createMainWindow = () => {
-    const { width, height, x, y } = config.get('bounds');
+    const { width, height, x, y } = electronConfig.get('bounds');
     mainWindow = new BrowserWindow({
         width,
         height,
@@ -42,7 +31,7 @@ const createMainWindow = () => {
 
     ['resize', 'move'].forEach(ev => {
         mainWindow.on(ev, () => {
-            config.set('bounds', mainWindow.getBounds());
+            electronConfig.set('bounds', mainWindow.getBounds());
         });
     });
 
@@ -58,3 +47,16 @@ app.on('window-all-closed', function () {
 });
 
 app.on('ready', createMainWindow);
+
+ipcMain.on('OpenHarFile', event => {
+    dialog.showOpenDialog(mainWindow, dialogConfig).then(file => {
+        readFile(event, file.filePaths[0]);
+    });
+});
+
+const readFile = (event, filepath) => {
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+        err && console.log(err.stack);
+        event.sender.send('fileData', data);
+    });
+};

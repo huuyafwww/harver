@@ -4,4 +4,9 @@ const pagesInfo = {
 
 const SidebarConfig = require('./sidebar').Config;
 
-export { pagesInfo, SidebarConfig };
+const dialogOptions = {
+    title: 'open folder',
+    properties: ['openDirectory'],
+};
+
+export { pagesInfo, SidebarConfig, dialogOptions };

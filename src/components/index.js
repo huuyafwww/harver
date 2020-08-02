@@ -4,6 +4,12 @@ import styled from 'styled-components';
 import Sidebar from '@components/sidebar/';
 import Main from '@components/main/';
 
+const { ipcRenderer } = window.require('electron');
+
+ipcRenderer.on('fileData', (event, data) => {
+    console.log(data);
+});
+
 const AppWrapper = styled.div``;
 
 @inject('store')
