@@ -10,4 +10,12 @@ export default class Store {
     setPageSlug(pageSlug) {
         this.pageSlug = pageSlug;
     }
+
+    @computed get nowPageLabel() {
+        return this.PageLabel;
+    }
+
+    setPageLabel(PageLabel) {
+        this.PageLabel = PageLabel;
+    }
 }

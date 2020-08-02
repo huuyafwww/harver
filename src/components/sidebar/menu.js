@@ -11,11 +11,16 @@ export default class SidebarMenu extends Component {
         super(props);
         this.state = {};
         this.store = this.props.store;
+        this.nowPageSlug = this.store.nowPageSlug;
+    }
+
+    setPageLabel(Item) {
+        const { slug, label } = Item;
+        this.nowPageSlug === slug && this.store.setPageLabel(label);
     }
 
     getActiveItem(slug) {
-        const nowPageSlug = this.store.nowPageSlug;
-        return nowPageSlug === slug ? 'active' : '';
+        return this.nowPageSlug === slug ? 'active' : '';
     }
 
     getMenuItemHeader(Item, key) {
@@ -27,6 +32,7 @@ export default class SidebarMenu extends Component {
     }
 
     getMenuItem(Item, key) {
+        this.setPageLabel(Item);
         return (
             <li key={key} className={this.getActiveItem(Item.slug)}>
                 <div className="nav-link" href={Item.link}>

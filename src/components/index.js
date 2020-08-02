@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import Sidebar from '@components/sidebar/';
+import Main from '@components/main/';
 
 const AppWrapper = styled.div``;
 
@@ -19,6 +20,7 @@ export default class App extends Component {
         return (
             <AppWrapper>
                 <Sidebar />
+                <Main />
             </AppWrapper>
         );
     }
