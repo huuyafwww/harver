@@ -10,22 +10,24 @@
 - Electron
     - Main Process
         - Webpack
-            - ESLint
+            - Prettier
+            - Babel
+                - ESLint
     - Renderer Process
         - React
+        - MobX
         - GatsbyJS
             - Prettier
+            - Babel
+                - ESLint
 
 Sorry, Now Developing.😢
-
-I plan to switch this project to GatsbyJS💁‍♂️
-
-=> I switched this project to GatsbyJS🎉
 
 ## Thank you 🙇‍♂️
 
 - [Electron](https://www.electronjs.org/)
 - [React](https://ja.reactjs.org/)
+- [MobX](https://mobx.js.org/README.html)
 - [GatsbyJS](https://www.gatsbyjs.org/)
 - [webpack](https://webpack.js.org/)
 - [Babel](https://babeljs.io/)

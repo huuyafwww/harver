@@ -4,6 +4,7 @@ module.exports = {
         es6: true,
         node: true,
     },
+    parser: 'babel-eslint',
     extends: [
         'standard',
         'eslint:recommended',
@@ -13,6 +14,7 @@ module.exports = {
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
+            legacyDecorators: true,
         },
         ecmaVersion: 2018,
         sourceType: 'module',
@@ -29,5 +31,6 @@ module.exports = {
         'no-console': 0,
         'no-unused-vars': [0],
         'no-irregular-whitespace': [0],
+        'no-useless-constructor': 'off',
     },
 };
