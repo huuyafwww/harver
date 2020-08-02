@@ -21,3 +21,26 @@
     margin-top: 3px;
     width: 100%;
 }
+
+body:not(.sidebar-mini) .main-sidebar .sidebar-menu > li.active > .nav-link {
+    padding-left: 16px;
+    background-color: transparent;
+    position: relative;
+}
+
+.main-sidebar .sidebar-menu li.active .nav-link {
+    color: #6777ef;
+    font-weight: 600;
+    background-color: #fcfcfd;
+}
+
+body:not(.sidebar-mini) .main-sidebar .sidebar-menu > li.active > .nav-link:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 25px;
+    width: 4px;
+    background-color: #6777ef;
+}

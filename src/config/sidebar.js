@@ -13,6 +13,7 @@ const Config = {
         },
         {
             label: 'Home',
+            slug: 'index',
             link: 'index',
             icon: <FaHome />,
             isMenuItemHeader: false,

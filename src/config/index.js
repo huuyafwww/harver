@@ -2,6 +2,6 @@ const pagesInfo = {
     index: {},
 };
 
-const SideberConfig = require('./sidebar').Config;
+const SidebarConfig = require('./sidebar').Config;
 
-export { pagesInfo, SideberConfig };
+export { pagesInfo, SidebarConfig };

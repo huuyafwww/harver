@@ -14,7 +14,7 @@
     "electron-build": "webpack --config electron.webpack.config.js ",
     "webp-elec-dev": "webpack --watch --config electron.webpack.config.js",
     "webp-react-dev": "webpack --watch --config react.webpack.config.js",
-    "format": "eslint --fix",
+    "format": "prettier --write \"**/*.js\"",
     "serve": "gatsby serve",
     "clean": "gatsby clean && mkdir public && echo '{\"main\":\"main.js\"}' > public/package.json && yarn cache clean",
     "dev-tool": "npx react-devtools"
@@ -47,6 +47,8 @@
     "gatsby-plugin-styled-components": "^3.3.10",
     "gatsby-source-filesystem": "^2.3.14",
     "gatsby-transformer-sharp": "^2.5.7",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.5",
     "open": "^7.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

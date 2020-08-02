@@ -1,13 +1,18 @@
 import React from 'react';
+import { Provider } from 'mobx-react';
 import { Link } from 'gatsby';
+import Store from '@stores';
 import '@styles';
 import { getFileName } from '@helpers';
 import App from '@components';
 
-const page = getFileName(__filename);
+const store = new Store();
+const pageSlug = getFileName(__filename);
 
 export default () => (
     <Link to="/">
-        <App pageName={page} />
+        <Provider store={store}>
+            <App pageSlug={pageSlug} />
+        </Provider>
     </Link>
 );

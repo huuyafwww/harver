@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { SideberConfig } from '@config';
+import { SidebarConfig } from '@config';
 import SidebarHeader from '@components/sidebar/header';
 import SidebarMenu from '@components/sidebar/menu';
 
@@ -17,8 +17,8 @@ export default class Sidebar extends Component {
         return (
             <SidebarWrapper className="main-sidebar">
                 <Aside>
-                    <SidebarHeader Info={SideberConfig.info} />
-                    <SidebarMenu Menu={SideberConfig.menu} />
+                    <SidebarHeader Info={SidebarConfig.info} />
+                    <SidebarMenu Menu={SidebarConfig.menu} />
                 </Aside>
             </SidebarWrapper>
         );
