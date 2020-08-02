@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const Config = require('electron-config');
 const path = require('path');
-const serve = require('electron-serve');
 
 const isDev = () => {
     return !app.isPackaged;

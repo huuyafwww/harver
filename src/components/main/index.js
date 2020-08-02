@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
+import { getNowPageComponent } from '@helpers';
 import Home from '@components/main/home';
 
 const MainWrapper = styled.div``;
@@ -14,30 +15,15 @@ export default class Main extends Component {
         super(props);
         this.state = {};
         this.nowPageLabel = this.props.store.nowPageLabel;
-        this.getNowPageComponent(this.nowPageLabel);
+        this.setNowPageComponent(this.nowPageLabel, Components);
     }
 
-    getNowPageComponent(nowPageLabel) {
-        for (const Component of Components) {
-            const ComponentName = this.getComponentName(Component);
-            if (nowPageLabel === ComponentName) {
-                this.setNowPageComponent(Component);
-                break;
-            }
-        }
-    }
-
-    getComponentName(Component) {
-        return Component.wrappedComponent.name;
-    }
-
-    setNowPageComponent(Component) {
-        this.NowPageComponent = Component;
+    setNowPageComponent(nowPageLabel, Components) {
+        this.NowPageComponent = getNowPageComponent(nowPageLabel, Components);
     }
 
     render() {
-        const { nowPageLabel } = this;
-        const { NowPageComponent } = this;
+        const { nowPageLabel, NowPageComponent } = this;
         return (
             <MainWrapper className="main-content">
                 <section className="section">

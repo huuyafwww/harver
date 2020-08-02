@@ -73,8 +73,6 @@
     "concurrently": "^5.2.0",
     "electron-builder": "^22.7.0",
     "electron-osx-sign": "^0.4.17",
-    "electron-reload": "^1.5.0",
-    "electron-reloader": "^1.0.1",
     "electron-serve": "^1.0.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
