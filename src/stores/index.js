@@ -1,4 +1,5 @@
 import { computed } from 'mobx';
+import { HarService } from '@services';
 
 export default class Store {
     constructor() {}
@@ -24,6 +25,15 @@ export default class Store {
     }
 
     setHarFileData(harData) {
-        this.harData = harData;
+        this.harData = JSON.parse(harData);
+        this.analyseHarData();
+    }
+
+    analyseHarData() {
+        this.analysedHarData = HarService.Analyse(this.harData);
+    }
+
+    @computed get analysedData() {
+        return this.analysedHarData;
     }
 }

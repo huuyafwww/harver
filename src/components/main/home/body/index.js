@@ -30,7 +30,9 @@ export default class HomeCardBody extends Component {
     }
 
     render() {
-        const { harData } = this.store;
+        const { analysedData } = this.store;
+        const { isLoaded } = this.state;
+        isLoaded && console.log(this.store.analysedData);
         return <div></div>;
     }
 }

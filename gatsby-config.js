@@ -45,6 +45,7 @@ module.exports = {
                     '@helpers': 'src/helpers',
                     '@config': 'src/config',
                     '@stores': 'src/stores',
+                    '@services': 'src/services',
                 },
                 extensions: ['js'],
             },
