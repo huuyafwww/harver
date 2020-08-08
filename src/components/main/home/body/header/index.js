@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
-import { date2time } from '@helpers';
+import { Table } from 'react-bootstrap';
+import { millisecond2second, date2time } from '@helpers';
 
 @inject('store')
 @observer
@@ -9,13 +10,41 @@ export default class HomeCardBodyHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.store = this.props.store;
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        const { har } = this.props;
+        const url = har.title;
+        const date = date2time(har.startedDateTime);
+        const { pageTimings } = har;
+        const onContentLoad = millisecond2second(pageTimings.onContentLoad);
+        const onLoad = millisecond2second(pageTimings.onLoad);
+        this.setState({ date, url, onContentLoad, onLoad });
+    }
 
     render() {
-        const { harData } = this.store;
-        return <div></div>;
+        const { date, url, onContentLoad, onLoad } = this.state;
+        return (
+            <Table striped bordered hover>
+                <tbody>
+                    <tr>
+                        <th>日時</th>
+                        <td>{date}</td>
+                    </tr>
+                    <tr>
+                        <th>ページURL</th>
+                        <td>{url}</td>
+                    </tr>
+                    <tr>
+                        <th>onContentLoad</th>
+                        <td>{onContentLoad}</td>
+                    </tr>
+                    <tr>
+                        <th>onLoad</th>
+                        <td>{onLoad}</td>
+                    </tr>
+                </tbody>
+            </Table>
+        );
     }
 }
