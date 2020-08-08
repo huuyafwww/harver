@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Card, Button } from 'react-bootstrap';
 import HomeCardBody from '@components/main/home/body';
-const { ipcRenderer } = window.require('electron');
 const HomeWrapper = styled.div``;
 
 const CardTitle = styled.h4``;
@@ -17,8 +16,12 @@ export default class Home extends Component {
         this.SelectFile = this.SelectFile.bind(this);
     }
 
+    componentDidMount() {
+        this.ipcRenderer = window.require('electron').ipcRenderer;
+    }
+
     SelectFile() {
-        ipcRenderer.send('OpenHarFile');
+        this.ipcRenderer.send('OpenHarFile');
     }
 
     render() {

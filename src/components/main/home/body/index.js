@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
-const { ipcRenderer } = window.require('electron');
+import HomeCardBodyHeader from '@components/main/home/body/header';
 
 @inject('store')
 @observer
@@ -17,7 +17,8 @@ export default class HomeCardBody extends Component {
     }
 
     componentDidMount() {
-        ipcRenderer.on('fileData', this.onIpc);
+        this.ipcRenderer = window.require('electron').ipcRenderer;
+        this.ipcRenderer.on('fileData', this.onIpc);
     }
 
     onIpc(event, harFileData) {
@@ -30,9 +31,7 @@ export default class HomeCardBody extends Component {
     }
 
     render() {
-        const { analysedData } = this.store;
         const { isLoaded } = this.state;
-        isLoaded && console.log(this.store.analysedData);
-        return <div></div>;
+        return <div>{isLoaded && <HomeCardBodyHeader />}</div>;
     }
 }

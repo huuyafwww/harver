@@ -11,7 +11,7 @@ export default class SidebarMenu extends Component {
         super(props);
         this.state = {};
         this.store = this.props.store;
-        this.nowPageSlug = this.store.nowPageSlug;
+        this.nowPageSlug = this.store.PageSlug;
     }
 
     setPageLabel(Item) {

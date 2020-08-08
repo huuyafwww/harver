@@ -15,4 +15,12 @@ const getNowPageComponent = (nowPageLabel, Components) => {
     }
 };
 
-export { getFileName, getNowPageComponent };
+const millisecond2second = (
+    millisecond,
+    secondDigit = 1000,
+    roundDigit = 100
+) => {
+    return Math.round((millisecond / secondDigit) * roundDigit) / roundDigit;
+};
+
+export { getFileName, getNowPageComponent, millisecond2second };

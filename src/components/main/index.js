@@ -14,7 +14,7 @@ export default class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.nowPageLabel = this.props.store.nowPageLabel;
+        this.nowPageLabel = this.props.store.PageLabel;
         this.setNowPageComponent(this.nowPageLabel, Components);
     }
 
