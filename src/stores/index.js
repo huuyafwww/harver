@@ -18,4 +18,12 @@ export default class Store {
     setPageLabel(PageLabel) {
         this.PageLabel = PageLabel;
     }
+
+    @computed get Data() {
+        return this.harData;
+    }
+
+    setHarFileData(harData) {
+        this.harData = harData;
+    }
 }
