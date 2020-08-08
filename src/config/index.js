@@ -9,4 +9,6 @@ const dialogOptions = {
     properties: ['openDirectory'],
 };
 
-export { pagesInfo, SidebarConfig, dialogOptions };
+const timeFormatOption = 'YYYY年MM月DD日 HH時mm分ss秒';
+
+export { pagesInfo, SidebarConfig, dialogOptions, timeFormatOption };

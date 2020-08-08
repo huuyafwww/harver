@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
+import { date2time } from '@helpers';
 
 @inject('store')
 @observer

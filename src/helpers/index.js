@@ -1,3 +1,4 @@
+import { millisecond2second, date2time } from '@helpers/time';
 const getFileName = fileNamePath => {
     return require('path').basename(fileNamePath, '.js');
 };
@@ -15,12 +16,4 @@ const getNowPageComponent = (nowPageLabel, Components) => {
     }
 };
 
-const millisecond2second = (
-    millisecond,
-    secondDigit = 1000,
-    roundDigit = 100
-) => {
-    return Math.round((millisecond / secondDigit) * roundDigit) / roundDigit;
-};
-
-export { getFileName, getNowPageComponent, millisecond2second };
+export { getFileName, getNowPageComponent, millisecond2second, date2time };
