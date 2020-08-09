@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Accordion, Card, Button } from 'react-bootstrap';
-import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
@@ -56,8 +55,9 @@ export default class Accordions extends Component {
         );
     }
 
-    getAccordionCollapse(eventKey, targetOption, HarViewComponent) {
+    getAccordionCollapse(eventKey, targetOption) {
         const { data } = targetOption;
+        const HarViewComponent = Components[eventKey];
         return (
             <Accordion.Collapse eventKey={eventKey}>
                 <Card.Body>
@@ -72,18 +72,14 @@ export default class Accordions extends Component {
         const { ComponentOptions } = this.props;
         return (
             <Accordion defaultActiveKey="0">
-                {Components.map((HarViewComponent, key) => {
-                    const ComponentName = getComponentName(HarViewComponent);
+                {Components.map((Component, key) => {
+                    const ComponentName = getComponentName(Component);
                     const targetOption = ComponentOptions[ComponentName];
                     const eventKey = String(key);
                     return (
                         <Card key={key}>
                             {getAccordionToggle(eventKey, targetOption)}
-                            {getAccordionCollapse(
-                                eventKey,
-                                targetOption,
-                                HarViewComponent
-                            )}
+                            {getAccordionCollapse(eventKey, targetOption)}
                         </Card>
                     );
                 })}
