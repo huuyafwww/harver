@@ -5,6 +5,7 @@ import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs';
 
 const FixedToggleMenuWrapper = styled.div`
     font-size: 1.5em;
+    margin-left: 5px;
     position: absolute;
     left: ${({ isOpenMenu }) => (isOpenMenu && '250') || '0'}px;
     top: 0;
