@@ -16,4 +16,10 @@ const getNowPageComponent = (nowPageLabel, Components) => {
     }
 };
 
-export { getFileName, getNowPageComponent, millisecond2second, date2time };
+export {
+    getFileName,
+    getComponentName,
+    getNowPageComponent,
+    millisecond2second,
+    date2time,
+};

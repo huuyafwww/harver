@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import styled from 'styled-components';
-import { Accordion, Button } from 'react-bootstrap';
-import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
-import HomeCardBodyHeader from '@components/main/home/body/header';
-
-const ToggleTitleWrapper = styled.span`
-    font-size: 1.3em;
-`;
-
-const ToggleIconWrapper = styled.span`
-    font-size: 2em;
-`;
+import Accordions from '@components/main/home/body/accordion';
 
 @inject('store')
 @observer
@@ -20,12 +9,16 @@ export default class HomeCardBody extends Component {
         super(props);
         this.state = {
             isLoaded: false,
-            isOpenPageInfo: true,
+            openStatus: {
+                isOpenPageInfo: true,
+            },
         };
         this.store = this.props.store;
         this.onIpc = this.onIpc.bind(this);
         this.setHarFileData = this.setHarFileData.bind(this);
-        this.togglePageInfo = this.togglePageInfo.bind(this);
+        this.getOpenStatus = this.getOpenStatus.bind(this);
+        this.setComponentOptions = this.setComponentOptions.bind(this);
+        this.toggleAccordionIcon = this.toggleAccordionIcon.bind(this);
     }
 
     componentDidMount() {
@@ -42,35 +35,38 @@ export default class HomeCardBody extends Component {
         this.setState({ isLoaded });
     }
 
-    togglePageInfo() {
-        const isOpenPageInfo = !this.state.isOpenPageInfo;
-        this.setState({ isOpenPageInfo });
+    setComponentOptions() {
+        const { harData } = this.store;
+        this.ComponentOptions = {
+            HomeCardBodyHeader: {
+                title: 'ページ情報',
+                data: harData.log.pages[0],
+                toggleVarName: 'isOpenPageInfo',
+            },
+        };
+    }
+
+    getOpenStatus(toggleVarName) {
+        return this.state.openStatus[toggleVarName];
+    }
+
+    toggleAccordionIcon(target) {
+        const { openStatus } = this.state;
+        openStatus[target] = !openStatus[target];
+        this.setState({ openStatus });
     }
 
     render() {
-        const { harData } = this.store;
-        const { isLoaded, isOpenPageInfo } = this.state;
+        const { isLoaded } = this.state;
+        isLoaded && this.setComponentOptions();
         return (
             <div>
                 {isLoaded && (
-                    <Accordion defaultActiveKey="0">
-                        <Accordion.Toggle
-                            as={Button}
-                            variant="link"
-                            eventKey="0"
-                            onClick={this.togglePageInfo}
-                        >
-                            <ToggleTitleWrapper>ページ情報</ToggleTitleWrapper>
-                            <ToggleIconWrapper>
-                                {(isOpenPageInfo && <BsCaretUp />) || (
-                                    <BsCaretDown />
-                                )}
-                            </ToggleIconWrapper>
-                        </Accordion.Toggle>
-                        <Accordion.Collapse eventKey="0">
-                            <HomeCardBodyHeader har={harData.log.pages[0]} />
-                        </Accordion.Collapse>
-                    </Accordion>
+                    <Accordions
+                        ComponentOptions={this.ComponentOptions}
+                        toggleAccordionIcon={this.toggleAccordionIcon}
+                        getOpenStatus={this.getOpenStatus}
+                    />
                 )}
             </div>
         );
