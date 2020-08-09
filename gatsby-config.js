@@ -1,7 +1,7 @@
 module.exports = {
     siteMetadata: {
         title: `Harver`,
-        description: `This is HAR File Viewer!`,
+        description: `This is a HTTP Archive File Viewer!`,
         author: `huuyafwww`,
     },
     plugins: [

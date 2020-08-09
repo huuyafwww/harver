@@ -3,7 +3,7 @@
   "name": "Harver",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "This is HAR File Viewer!",
+  "description": "This is a HTTP Archive File Viewer!",
   "keywords": [],
   "scripts": {
     "develop": "concurrently \"yarn gatsby-develop\" \"yarn webp-elec-dev\" \"yarn electron-develop\"",
