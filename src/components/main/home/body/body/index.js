@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Table } from 'react-bootstrap';
+import styled from 'styled-components';
+import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 // import UrlParse from 'url-parse';
 import { byte2SizeString } from '@helpers';
+
+const DisplayText = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
+const TableStyle = {
+    tableLayout: 'fixed',
+};
 
 @inject('store')
 @observer
@@ -10,7 +21,16 @@ export default class HomeCardBodyBody extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.getTooltip = this.getTooltip.bind(this);
         this.getRow = this.getRow.bind(this);
+    }
+
+    getTooltip(text) {
+        return (
+            <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
+                <DisplayText>{text}</DisplayText>
+            </OverlayTrigger>
+        );
     }
 
     getRow(Row, key) {
@@ -18,7 +38,7 @@ export default class HomeCardBodyBody extends Component {
         const byteSize = byte2SizeString(response.content.size);
         return (
             <tr key={key}>
-                <td>{request.url}</td>
+                <td>{this.getTooltip(request.url)}</td>
                 <td>{request.method}</td>
                 <td>{response.status}</td>
                 <td>{response.content.mimeType}</td>
@@ -31,7 +51,7 @@ export default class HomeCardBodyBody extends Component {
     render() {
         const { har } = this.props;
         return (
-            <Table striped bordered hover responsive>
+            <Table style={TableStyle} striped bordered hover responsive>
                 <thead>
                     <tr>
                         <th>Name</th>
