@@ -11,6 +11,7 @@ export default class HomeCardBody extends Component {
             isLoaded: false,
             openStatus: {
                 isOpenPageInfo: true,
+                isOpenPageResult: false,
             },
         };
         this.store = this.props.store;
@@ -39,9 +40,14 @@ export default class HomeCardBody extends Component {
         const { harData } = this.store;
         this.ComponentOptions = {
             HomeCardBodyHeader: {
-                title: 'ページ情報',
+                title: 'Info',
                 data: harData.log.pages[0],
                 toggleVarName: 'isOpenPageInfo',
+            },
+            HomeCardBodyBody: {
+                title: 'Result',
+                data: harData.log.entries,
+                toggleVarName: 'isOpenPageResult',
             },
         };
     }

@@ -5,6 +5,7 @@ import { Accordion, Card, Button } from 'react-bootstrap';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
+import HomeCardBodyBody from '@components/main/home/body/body';
 
 const ToggleTitleWrapper = styled.span`
     font-size: 1.3em;
@@ -15,7 +16,7 @@ const ToggleIconWrapper = styled.span`
     vertical-align: bottom;
 `;
 
-const Components = [HomeCardBodyHeader];
+const Components = [HomeCardBodyHeader, HomeCardBodyBody];
 
 @inject('store')
 @observer
