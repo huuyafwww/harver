@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import Sidebar from '@components/sidebar/';
 import Main from '@components/main/';
 
-const AppWrapper = styled.div``;
+const AppWrapper = styled.div`
+    user-select: text;
+    cursor: auto;
+`;
 
 @inject('store')
 @observer

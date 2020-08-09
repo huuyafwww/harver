@@ -13,7 +13,7 @@ const ToggleTitleWrapper = styled.span`
 
 const ToggleIconWrapper = styled.span`
     font-size: 2em;
-    vertical-align: bottom;
+    margin-left: 4px;
 `;
 
 const Components = [HomeCardBodyHeader, HomeCardBodyBody];
