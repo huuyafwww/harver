@@ -37,11 +37,11 @@ export default class HomeCardBodyHeader extends Component {
                     </tr>
                     <tr>
                         <th>onContentLoad</th>
-                        <td>{onContentLoad}</td>
+                        <td>{onContentLoad}s</td>
                     </tr>
                     <tr>
                         <th>onLoad</th>
-                        <td>{onLoad}</td>
+                        <td>{onLoad}s</td>
                     </tr>
                 </tbody>
             </Table>

@@ -3,8 +3,16 @@ import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { getNowPageComponent } from '@helpers';
 import Home from '@components/main/home';
+import FixedToggleMenu from '@components/main/fixedToggleMenu';
 
-const MainWrapper = styled.div``;
+const MainWrapper = styled.div`
+    position: relative;
+`;
+
+const MainComponentWrapper = styled.div`
+    padding-left: ${({ isOpenMenu }) => (isOpenMenu && '280') || '30'}px;
+    transition: all 400ms 0s ease;
+`;
 
 const Components = [Home];
 
@@ -24,16 +32,26 @@ export default class Main extends Component {
 
     render() {
         const { nowPageLabel, NowPageComponent } = this;
+        const { isOpenMenu, toggleMenu } = this.props;
         return (
-            <MainWrapper className="main-content">
-                <section className="section">
-                    <div className="section-header">
-                        <h1>{nowPageLabel}</h1>
-                    </div>
-                    <div className="section-body">
-                        <NowPageComponent />
-                    </div>
-                </section>
+            <MainWrapper>
+                <FixedToggleMenu
+                    isOpenMenu={isOpenMenu}
+                    toggleMenu={toggleMenu}
+                />
+                <MainComponentWrapper
+                    className="main-content"
+                    isOpenMenu={isOpenMenu}
+                >
+                    <section className="section">
+                        <div className="section-header">
+                            <h1>{nowPageLabel}</h1>
+                        </div>
+                        <div className="section-body">
+                            <NowPageComponent />
+                        </div>
+                    </section>
+                </MainComponentWrapper>
             </MainWrapper>
         );
     }

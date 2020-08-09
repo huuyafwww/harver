@@ -11,16 +11,27 @@ const AppWrapper = styled.div``;
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            isOpenMenu: true,
+        };
         const { store, pageSlug } = this.props;
         store.setPageSlug(pageSlug);
+        this.toggleMenu = this.toggleMenu.bind(this);
+    }
+
+    toggleMenu() {
+        const isOpenMenu = !this.state.isOpenMenu;
+        this.setState({ isOpenMenu });
     }
 
     render() {
         return (
             <AppWrapper>
-                <Sidebar />
-                <Main />
+                <Sidebar isOpenMenu={this.state.isOpenMenu} />
+                <Main
+                    isOpenMenu={this.state.isOpenMenu}
+                    toggleMenu={this.toggleMenu}
+                />
             </AppWrapper>
         );
     }
