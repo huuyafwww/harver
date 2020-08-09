@@ -11,4 +11,6 @@ const dialogOptions = {
 
 const timeFormatOption = 'YYYY年MM月DD日 HH時mm分ss秒';
 
-export { pagesInfo, SidebarConfig, dialogOptions, timeFormatOption };
+const sizes = ['B', 'KB', 'MB', 'GB'];
+
+export { pagesInfo, SidebarConfig, dialogOptions, timeFormatOption, sizes };

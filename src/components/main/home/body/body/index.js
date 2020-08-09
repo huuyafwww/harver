@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Table } from 'react-bootstrap';
-import UrlParse from 'url-parse';
+// import UrlParse from 'url-parse';
+import { byte2SizeString } from '@helpers';
 
 @inject('store')
 @observer
@@ -14,15 +15,15 @@ export default class HomeCardBodyBody extends Component {
 
     getRow(Row, key) {
         const { request, response } = Row;
-        const parsedUrl = new UrlParse(request.url);
-        const name = parsedUrl.pathname.split('/').slice(-1)[0];
+        const byteSize = byte2SizeString(response.content.size);
         return (
             <tr key={key}>
-                <td>{name}</td>
+                <td>{request.url}</td>
                 <td>{request.method}</td>
                 <td>{response.status}</td>
                 <td>{response.content.mimeType}</td>
-                <td>{response.content.size}</td>
+                <td>{Row._resourceType}</td>
+                <td>{byteSize}</td>
             </tr>
         );
     }
@@ -36,7 +37,8 @@ export default class HomeCardBodyBody extends Component {
                         <th>Name</th>
                         <th>Method</th>
                         <th>Status</th>
-                        <th>Type</th>
+                        <th>MIME Type</th>
+                        <th>Resource Type</th>
                         <th>Size</th>
                     </tr>
                 </thead>
