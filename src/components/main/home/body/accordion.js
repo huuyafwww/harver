@@ -35,8 +35,8 @@ export default class Accordions extends Component {
     }
 
     onClick(e) {
-        const target = e.currentTarget.dataset.toggleVarName;
-        this.props.toggleAccordionIcon(target);
+        const { toggleVarName } = e.currentTarget.dataset;
+        this.props.toggleAccordionIcon(toggleVarName);
     }
 
     getAccordionToggle(eventKey, targetOption) {

@@ -56,9 +56,9 @@ export default class HomeCardBody extends Component {
         return this.state.openStatus[toggleVarName];
     }
 
-    toggleAccordionIcon(target) {
+    toggleAccordionIcon(toggleVarName) {
         const { openStatus } = this.state;
-        openStatus[target] = !openStatus[target];
+        openStatus[toggleVarName] = !openStatus[toggleVarName];
         this.setState({ openStatus });
     }
 
