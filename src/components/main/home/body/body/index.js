@@ -13,6 +13,7 @@ const DisplayText = styled.div`
 
 const TableStyle = {
     tableLayout: 'fixed',
+    marginBottom: 0,
 };
 
 @inject('store')

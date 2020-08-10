@@ -16,6 +16,10 @@ const ToggleIconWrapper = styled.span`
     margin-left: 4px;
 `;
 
+const CardBodyStyle = {
+    padding: 0,
+};
+
 const Components = [HomeCardBodyHeader, HomeCardBodyBody];
 
 @inject('store')
@@ -61,7 +65,7 @@ export default class Accordions extends Component {
         const HarViewComponent = Components[eventKey];
         return (
             <Accordion.Collapse eventKey={eventKey}>
-                <Card.Body>
+                <Card.Body style={CardBodyStyle}>
                     <HarViewComponent har={data} />
                 </Card.Body>
             </Accordion.Collapse>

@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 import { millisecond2second, date2time } from '@helpers';
 
+const TableStyle = {
+    marginBottom: 0,
+};
+
 @inject('store')
 @observer
 export default class HomeCardBodyHeader extends Component {
@@ -25,7 +29,7 @@ export default class HomeCardBodyHeader extends Component {
     render() {
         const { date, url, onContentLoad, onLoad } = this.state;
         return (
-            <Table striped bordered hover>
+            <Table style={TableStyle} striped bordered hover>
                 <tbody>
                     <tr>
                         <th>日時</th>
