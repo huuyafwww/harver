@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaRegSun } from 'react-icons/fa';
 
 const Config = {
     info: {
@@ -14,8 +14,15 @@ const Config = {
         {
             label: 'Home',
             slug: 'index',
-            link: 'index',
+            link: '/',
             icon: <FaHome />,
+            isMenuItemHeader: false,
+        },
+        {
+            label: 'Settings',
+            slug: 'settings',
+            link: '/settings',
+            icon: <FaRegSun />,
             isMenuItemHeader: false,
         },
     ],

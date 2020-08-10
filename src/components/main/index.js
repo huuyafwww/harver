@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import { getNowPageComponent } from '@helpers';
 import Home from '@components/main/home';
+import Settings from '@components/main/settings';
 import FixedToggleMenu from '@components/main/fixedToggleMenu';
 
 const MainWrapper = styled.div`
@@ -17,7 +18,7 @@ const MainComponentWrapper = styled.div`
 
 const SectionHeaderRightWrapper = styled.div``;
 
-const Components = [Home];
+const Components = [Home, Settings];
 
 @inject('store')
 @observer

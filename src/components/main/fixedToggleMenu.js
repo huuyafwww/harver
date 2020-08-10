@@ -13,6 +13,8 @@ const FixedToggleMenuWrapper = styled.div`
     transition: all 400ms 0s ease;
 `;
 
+const ToggleIconStyle = {};
+
 @inject('store')
 @observer
 export default class FixedToggleMenu extends Component {

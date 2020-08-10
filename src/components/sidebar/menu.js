@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { Link } from 'gatsby';
 import styled from 'styled-components';
 
 const SidebarMenuWrapper = styled.ul``;
@@ -35,10 +36,12 @@ export default class SidebarMenu extends Component {
         this.setPageLabel(Item);
         return (
             <li key={key} className={this.getActiveItem(Item.slug)}>
-                <div className="nav-link" href={Item.link}>
-                    <i className="far">{Item.icon}</i>
-                    <span>{Item.label}</span>
-                </div>
+                <Link to={Item.link}>
+                    <div className="nav-link">
+                        <i className="far">{Item.icon}</i>
+                        <span>{Item.label}</span>
+                    </div>
+                </Link>
             </li>
         );
     }
