@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'mobx-react';
 import Store from '@stores';
-import '@styles';
 import { getFileName } from '@helpers';
 import App from '@components';
 

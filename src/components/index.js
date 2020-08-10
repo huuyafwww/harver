@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
+import '@styles';
 import Sidebar from '@components/sidebar/';
 import Main from '@components/main/';
 
