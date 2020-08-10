@@ -5,7 +5,7 @@
 
 ## Now 👨‍💻
 
-![Harver.gif](Harver.gif)
+![Harver.png](Harver.png)
 
 ## Stack 🌏
 
