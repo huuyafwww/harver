@@ -30,6 +30,7 @@ export default class HomeCardBodyBody extends Component {
         this.getRow = this.getRow.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.changeModalStatus = this.changeModalStatus.bind(this);
     }
 
     getTooltip(text) {
@@ -42,14 +43,15 @@ export default class HomeCardBodyBody extends Component {
 
     openModal(e) {
         const { key } = e.currentTarget.dataset;
-        const Row = this.state.Rows[key];
-        const isOpenModal = true;
-        this.setState({ Row, isOpenModal });
+        this.changeModalStatus(this.state.Rows[key], true);
     }
 
     closeModal() {
-        const isOpenModal = false;
-        this.setState({ isOpenModal });
+        this.changeModalStatus({}, false);
+    }
+
+    changeModalStatus(Row, isOpenModal) {
+        this.setState({ Row, isOpenModal });
     }
 
     getRow(Row, key) {
