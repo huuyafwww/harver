@@ -65,3 +65,7 @@ table.table {
 .table:not(.table-sm):not(.table-md):not(.dataTable) th {
     height: 35px;
 }
+
+.section .section-header{
+    justify-content: space-between;
+}

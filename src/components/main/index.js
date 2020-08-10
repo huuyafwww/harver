@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
+import { Button } from 'react-bootstrap';
 import { getNowPageComponent } from '@helpers';
 import Home from '@components/main/home';
 import FixedToggleMenu from '@components/main/fixedToggleMenu';
@@ -14,6 +15,8 @@ const MainComponentWrapper = styled.div`
     transition: all 400ms 0s ease;
 `;
 
+const SectionHeaderRightWrapper = styled.div``;
+
 const Components = [Home];
 
 @inject('store')
@@ -24,10 +27,19 @@ export default class Main extends Component {
         this.state = {};
         this.nowPageLabel = this.props.store.PageLabel;
         this.setNowPageComponent(this.nowPageLabel, Components);
+        this.SelectFile = this.SelectFile.bind(this);
+    }
+
+    componentDidMount() {
+        this.ipcRenderer = window.require('electron').ipcRenderer;
     }
 
     setNowPageComponent(nowPageLabel, Components) {
         this.NowPageComponent = getNowPageComponent(nowPageLabel, Components);
+    }
+
+    SelectFile() {
+        this.ipcRenderer.send('OpenHarFile');
     }
 
     render() {
@@ -46,6 +58,13 @@ export default class Main extends Component {
                     <section className="section">
                         <div className="section-header">
                             <h1>{nowPageLabel}</h1>
+                            {nowPageLabel === 'Home' && (
+                                <SectionHeaderRightWrapper>
+                                    <Button onClick={this.SelectFile}>
+                                        ファイルを選択
+                                    </Button>
+                                </SectionHeaderRightWrapper>
+                            )}
                         </div>
                         <div className="section-body">
                             <NowPageComponent />
