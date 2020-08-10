@@ -1,5 +1,15 @@
+import React from 'react';
 import { sizes } from '@config';
 import { millisecond2second, date2time } from '@helpers/time';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const DisplayText = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
 const getFileName = fileNamePath => {
     return require('path').basename(fileNamePath, '.js');
 };
@@ -30,6 +40,14 @@ const byte2SizeString = (byte, unit = 1024, roundDigit = 10) => {
     return `${roundedByte}${size}`;
 };
 
+const getTooltip = text => {
+    return (
+        <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
+            <DisplayText>{text}</DisplayText>
+        </OverlayTrigger>
+    );
+};
+
 export {
     getFileName,
     getComponentName,
@@ -37,4 +55,5 @@ export {
     byte2SizeString,
     millisecond2second,
     date2time,
+    getTooltip,
 };

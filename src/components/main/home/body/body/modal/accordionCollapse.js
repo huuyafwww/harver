@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
-import { Accordion, Card } from 'react-bootstrap';
+import { Accordion, Card, Table } from 'react-bootstrap';
+import { getTooltip } from '@helpers';
 
 const CardBodyStyle = {
     padding: 0,
+};
+
+const TableStyle = {
+    tableLayout: 'fixed',
+    marginBottom: 0,
 };
 
 @inject('store')
@@ -13,6 +19,7 @@ export default class AccordionCollapse extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.getDataHeaderComponent = this.getDataHeaderComponent.bind(this);
         this.getRequestComponent = this.getRequestComponent.bind(this);
         this.getResponseComponent = this.getResponseComponent.bind(this);
         this.showDataMethods = [
@@ -23,12 +30,37 @@ export default class AccordionCollapse extends Component {
 
     componentDidMount() {}
 
+    getDataHeaderComponent(Rows) {
+        return (
+            <Table style={TableStyle} striped bordered hover responsive>
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Rows.map((Row, key) => {
+                        return (
+                            <tr key={key}>
+                                <td>{Row.name}</td>
+                                <td>{getTooltip(Row.value)}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </Table>
+        );
+    }
+
     getRequestComponent(requestData) {
-        return <h4>リクエストデータ</h4>;
+        const { headers } = requestData;
+        return <div>{this.getDataHeaderComponent(headers)}</div>;
     }
 
     getResponseComponent(responseData) {
-        return <h4>レスポンスデータ</h4>;
+        const { headers } = responseData;
+        return <div>{this.getDataHeaderComponent(headers)}</div>;
     }
 
     render() {
