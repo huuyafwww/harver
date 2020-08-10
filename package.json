@@ -6,7 +6,7 @@
   "description": "This is a HTTP Archive File Viewer!",
   "keywords": [],
   "scripts": {
-    "develop": "concurrently \"yarn gatsby-develop\" \"yarn webp-elec-dev\" \"yarn electron-develop\"",
+    "develop": "concurrently \"yarn gatsby-develop\" \"yarn format-watch\" \"yarn webp-elec-dev\" \"yarn electron-develop\"",
     "gatsby-develop": "gatsby develop",
     "electron-develop": "wait-on http://localhost:8000 && electron public",
     "build": "yarn format && yarn gatsby-build && yarn electron-build",
@@ -14,7 +14,8 @@
     "electron-build": "webpack --config electron.webpack.config.js ",
     "webp-elec-dev": "webpack --watch --config electron.webpack.config.js",
     "webp-react-dev": "webpack --watch --config react.webpack.config.js",
-    "format": "prettier --write \"**/*.js\"",
+    "format": "prettier --config ./.prettierrc.js --write \"./{app,src}/**/{*.js,app.css,componentsCustom.css}\"",
+    "format-watch": "onchange './src/**/{*.js,app.css,componentsCustom.css}' -- prettier --config ./.prettierrc.js --write {{changed}}",
     "serve": "gatsby serve",
     "clean": "gatsby clean && mkdir public && echo '{\"main\":\"main.js\"}' > public/package.json && yarn cache clean && rm -rf ./node_modules",
     "dev-tool": "npx react-devtools"
@@ -24,7 +25,6 @@
     "url": "https://github.com/huuyafwww/harver/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.5",
     "about-window": "^1.13.4",
     "babel-plugin-styled-components": "^1.10.7",
     "build-url": "^2.0.0",
@@ -72,6 +72,7 @@
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
+    "@babel/runtime": "^7.11.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "concurrently": "^5.2.0",
@@ -91,6 +92,7 @@
     "gatsby-plugin-lodash": "^3.3.10",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
+    "onchange": "^7.0.2",
     "prettier": "^2.0.5",
     "react-devtools": "^4.8.2",
     "wait-on": "^5.1.0",
