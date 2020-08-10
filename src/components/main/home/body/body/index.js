@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
-// import UrlParse from 'url-parse';
 import { byte2SizeString } from '@helpers';
+import HarDetailModal from '@components/main/home/body/body/modal';
 
 const DisplayText = styled.div`
     overflow: hidden;
@@ -21,9 +21,15 @@ const TableStyle = {
 export default class HomeCardBodyBody extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            Rows: this.props.har,
+            Row: {},
+            isOpenModal: false,
+        };
         this.getTooltip = this.getTooltip.bind(this);
         this.getRow = this.getRow.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     getTooltip(text) {
@@ -34,11 +40,23 @@ export default class HomeCardBodyBody extends Component {
         );
     }
 
+    openModal(e) {
+        const { key } = e.currentTarget.dataset;
+        const Row = this.state.Rows[key];
+        const isOpenModal = true;
+        this.setState({ Row, isOpenModal });
+    }
+
+    closeModal() {
+        const isOpenModal = false;
+        this.setState({ isOpenModal });
+    }
+
     getRow(Row, key) {
         const { request, response } = Row;
         const byteSize = byte2SizeString(response.content.size);
         return (
-            <tr key={key}>
+            <tr key={key} onClick={this.openModal} data-key={key}>
                 <td>{this.getTooltip(request.url)}</td>
                 <td>{request.method}</td>
                 <td>{response.status}</td>
@@ -50,25 +68,32 @@ export default class HomeCardBodyBody extends Component {
     }
 
     render() {
+        const { closeModal } = this;
+        const { Row, isOpenModal } = this.state;
         const { har } = this.props;
         return (
-            <Table style={TableStyle} striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Method</th>
-                        <th>Status</th>
-                        <th>MIME Type</th>
-                        <th>Resource Type</th>
-                        <th>Size</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {har.map((Row, key) => {
-                        return this.getRow(Row, key);
-                    })}
-                </tbody>
-            </Table>
+            <div>
+                <Table style={TableStyle} striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>MIME Type</th>
+                            <th>Resource Type</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {har.map((Row, key) => {
+                            return this.getRow(Row, key);
+                        })}
+                    </tbody>
+                </Table>
+                {isOpenModal && (
+                    <HarDetailModal Row={Row} closeModal={closeModal} />
+                )}
+            </div>
         );
     }
 }
