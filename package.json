@@ -30,7 +30,6 @@
     "build-url": "^2.0.0",
     "chart.js": "^2.9.3",
     "electron": "^9.2.0",
-    "electron-config": "^2.0.0",
     "electron-context-menu": "^2.2.0",
     "electron-dl": "^3.0.1",
     "electron-find": "^1.0.6",

@@ -1,6 +1,6 @@
 import { windowConfig, webPreferences, dialogConfig } from './config';
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const Config = require('electron-config');
+const Store = require('electron-store');
 const path = require('path');
 const fs = require('fs');
 
@@ -8,12 +8,12 @@ const isDev = () => {
     return !app.isPackaged;
 };
 
-const electronConfig = new Config(windowConfig);
+const electronStore = new Store(windowConfig);
 
 let mainWindow;
 
 const createMainWindow = () => {
-    const { width, height, x, y } = electronConfig.get('bounds');
+    const { width, height, x, y } = electronStore.get('bounds');
     mainWindow = new BrowserWindow({
         width,
         height,
@@ -31,7 +31,7 @@ const createMainWindow = () => {
 
     ['resize', 'move'].forEach(ev => {
         mainWindow.on(ev, () => {
-            electronConfig.set('bounds', mainWindow.getBounds());
+            electronStore.set('bounds', mainWindow.getBounds());
         });
     });
 
