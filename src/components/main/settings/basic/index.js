@@ -14,10 +14,20 @@ export default class Basic extends Component {
         super(props);
         this.state = {
             values: {},
+            saveDatas: {},
         };
         this.onChange = this.onChange.bind(this);
         this.getFormItems = this.getFormItems.bind(this);
         this.onSave = this.onSave.bind(this);
+        this.saveResult = this.saveResult.bind(this);
+        this.getResult = this.getResult.bind(this);
+    }
+
+    componentDidMount() {
+        this.ipcRenderer = window.require('electron').ipcRenderer;
+        this.ipcRenderer.send('getSettings');
+        this.ipcRenderer.on('saveSettingsResult', this.saveResult);
+        this.ipcRenderer.on('getSettingsResult', this.getResult);
     }
 
     onChange(e) {
@@ -28,10 +38,23 @@ export default class Basic extends Component {
     }
 
     onSave() {
-        const { values } = this.state;
+        const saveData = {
+            Basic: this.state.values,
+        };
+        this.ipcRenderer.send('saveSettings', saveData);
+    }
+
+    saveResult(event, result) {
+        console.log(result);
+    }
+
+    getResult(event, saveDatas) {
+        saveDatas !== undefined && this.setState({ saveDatas });
     }
 
     getFormItems() {
+        const { saveDatas } = this.state;
+        console.log(saveDatas);
         return (
             <div>
                 <div className="section-title mt-0">UI</div>
@@ -44,6 +67,7 @@ export default class Basic extends Component {
                                 name="displayRow"
                                 value="Modal"
                                 onChange={this.onChange}
+                                checked
                                 className="selectgroup-input"
                             />
                             <span className="selectgroup-button">Modal</span>

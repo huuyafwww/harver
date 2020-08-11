@@ -60,3 +60,13 @@ const readFile = (event, filepath) => {
         event.sender.send('fileData', data);
     });
 };
+
+ipcMain.on('saveSettings', (event, saveData) => {
+    electronStore.set('Settings', saveData);
+    event.sender.send('saveSettingsResult', true);
+});
+
+ipcMain.on('getSettings', event => {
+    const saveData = electronStore.get('Settings');
+    event.sender.send('getSettingsResult', saveData);
+});
