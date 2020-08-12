@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Card, Button, Form } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { SettingsConfig } from '@config';
 
 const SaveButtonWrapper = styled.div`
     text-align: right;
@@ -14,6 +17,7 @@ export default class Basic extends Component {
         super(props);
         this.state = {
             values: {},
+            saving: false,
             saveDatas: {},
         };
         this.onChange = this.onChange.bind(this);
@@ -34,18 +38,21 @@ export default class Basic extends Component {
         const { name, value } = e.currentTarget;
         const { values } = this.state;
         values[name] = value;
-        this.setState(values);
+        this.setState({ values });
     }
 
-    onSave() {
+    onSave(saving = true) {
+        this.setState({ saving });
         const saveData = {
             Basic: this.state.values,
         };
         this.ipcRenderer.send('saveSettings', saveData);
     }
 
-    saveResult(event, result) {
-        console.log(result);
+    saveResult(event, result, saving = false) {
+        const saveToast = SettingsConfig.toast.save;
+        this.setState({ saving });
+        toast.success('🎉 保存しました', saveToast);
     }
 
     getResult(event, saveDatas) {
@@ -54,7 +61,6 @@ export default class Basic extends Component {
 
     getFormItems() {
         const { saveDatas } = this.state;
-        console.log(saveDatas);
         return (
             <div>
                 <div className="section-title mt-0">UI</div>
@@ -90,17 +96,20 @@ export default class Basic extends Component {
 
     render() {
         return (
-            <Card>
-                <Card.Body>
-                    <Card.Title>Basic</Card.Title>
-                    {this.getFormItems()}
-                    <SaveButtonWrapper>
-                        <Button variant="primary" onClick={this.onSave}>
-                            保存
-                        </Button>
-                    </SaveButtonWrapper>
-                </Card.Body>
-            </Card>
+            <div>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>Basic</Card.Title>
+                        {this.getFormItems()}
+                        <SaveButtonWrapper>
+                            <Button variant="primary" onClick={this.onSave}>
+                                保存
+                            </Button>
+                        </SaveButtonWrapper>
+                    </Card.Body>
+                </Card>
+                <ToastContainer />
+            </div>
         );
     }
 }
