@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Card, Button, Form } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
-import { SettingsConfig } from '@config';
 
 const SaveButtonWrapper = styled.div`
     text-align: right;
@@ -15,71 +12,21 @@ const SaveButtonWrapper = styled.div`
 export default class Basic extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            values: this.props.inits,
-            saving: false,
-            saveDatas: {},
-        };
-        this.onChange = this.onChange.bind(this);
+        this.state = {};
         this.getForms = this.getForms.bind(this);
         this.getItems = this.getItems.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.setDatas = this.setDatas.bind(this);
-        this.setValues = this.setValues.bind(this);
-        this.saveResult = this.saveResult.bind(this);
-        this.getResult = this.getResult.bind(this);
     }
 
-    componentDidMount() {
-        this.ipcRenderer = window.require('electron').ipcRenderer;
-        this.ipcRenderer.send('getSettings');
-        this.ipcRenderer.on('saveSettingsResult', this.saveResult);
-        this.ipcRenderer.on('getSettingsResult', this.getResult);
-    }
-
-    onChange(e) {
-        const { name, value } = e.currentTarget;
-        const { values } = this.state;
-        values[name] = value;
-        this.setValues(values);
-    }
-
-    onSave(saving = true) {
-        const { saveDatas, values } = this.state;
-        const { type } = this.props;
-        saveDatas[type] = values;
-        this.setState({ saving });
-        this.setDatas(saveDatas);
-        this.ipcRenderer.send('saveSettings', saveDatas);
-    }
-
-    saveResult(event, result, saving = false) {
-        const { save } = this.props.toast;
-        this.setState({ saving });
-        toast.success('🎉 保存しました', save);
-    }
-
-    getResult(event, saveDatas) {
-        const { type } = this.props;
-        if (saveDatas !== undefined) {
-            this.setDatas(saveDatas);
-            this.setValues(saveDatas[type]);
-        }
-    }
-
-    setDatas(saveDatas) {
-        this.setState({ saveDatas });
-    }
-
-    setValues(values) {
-        this.setState({ values });
+    componentDidUpdate() {
+        const { status, resetStatus } = this.props;
+        status !== 'none' && resetStatus();
     }
 
     getItems(label, input, span) {
-        const { values } = this.state;
-        const onChange = this[input.onChange];
+        const { datas, type } = this.props;
+        const onChange = this.props[input.onChange];
         return input.values.map((value, key) => {
-            const checked = values[input.name] === value ? 'checked' : '';
+            const checked = datas[input.name] === value;
             return (
                 <label className={label.className} key={key}>
                     <input
@@ -89,6 +36,7 @@ export default class Basic extends Component {
                         onChange={onChange}
                         className={input.className}
                         checked={checked}
+                        data-type={type}
                     />
                     <span className={span.className}>{span.values[key]}</span>
                 </label>
@@ -117,21 +65,19 @@ export default class Basic extends Component {
     }
 
     render() {
+        const { onSave } = this.props;
         return (
-            <div>
-                <Card>
-                    <Card.Body>
-                        <Card.Title>Basic</Card.Title>
-                        {this.getForms()}
-                        <SaveButtonWrapper>
-                            <Button variant="primary" onClick={this.onSave}>
-                                保存
-                            </Button>
-                        </SaveButtonWrapper>
-                    </Card.Body>
-                </Card>
-                <ToastContainer />
-            </div>
+            <Card>
+                <Card.Body>
+                    <Card.Title>Basic</Card.Title>
+                    {this.getForms()}
+                    <SaveButtonWrapper>
+                        <Button variant="primary" onClick={onSave}>
+                            保存
+                        </Button>
+                    </SaveButtonWrapper>
+                </Card.Body>
+            </Card>
         );
     }
 }

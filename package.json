@@ -34,6 +34,7 @@
     "electron-dl": "^3.0.1",
     "electron-find": "^1.0.6",
     "electron-is-dev": "^1.2.0",
+    "electron-json-storage": "^4.2.0",
     "electron-log": "^4.2.2",
     "electron-packager": "^15.0.0",
     "electron-store": "^6.0.0",
