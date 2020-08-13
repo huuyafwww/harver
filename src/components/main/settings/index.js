@@ -17,14 +17,14 @@ export default class Settings extends Component {
     }
 
     getTabItems() {
-        const { items } = SettingsConfig;
+        const { types } = SettingsConfig;
         return (
             <Nav variant="pills" className="flex-column">
                 <Nav.Item>
-                    {items.map((item, key) => {
+                    {types.map((type, key) => {
                         return (
-                            <Nav.Link key={key} eventKey={item}>
-                                {item}
+                            <Nav.Link key={key} eventKey={type}>
+                                {type}
                             </Nav.Link>
                         );
                     })}
@@ -34,14 +34,19 @@ export default class Settings extends Component {
     }
 
     getTabContents() {
-        const { items, components } = SettingsConfig;
+        const { types, components, items, toast, inits } = SettingsConfig;
         return (
             <Tab.Content>
-                {items.map((item, key) => {
+                {types.map((type, key) => {
                     const TargetSettingComponent = components[key];
                     return (
-                        <Tab.Pane key={key} eventKey={item}>
-                            <TargetSettingComponent />
+                        <Tab.Pane key={key} eventKey={type}>
+                            <TargetSettingComponent
+                                type={type}
+                                items={items[type]}
+                                toast={toast}
+                                inits={inits}
+                            />
                         </Tab.Pane>
                     );
                 })}
@@ -53,7 +58,7 @@ export default class Settings extends Component {
         const { getTabItems, getTabContents } = this;
         return (
             <SettingsWrapper>
-                <Tab.Container defaultActiveKey={SettingsConfig.items[0]}>
+                <Tab.Container defaultActiveKey={SettingsConfig.types[0]}>
                     <Row>
                         <Col md={4}>{getTabItems()}</Col>
                         <Col md={8}>{getTabContents()}</Col>
