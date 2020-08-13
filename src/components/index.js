@@ -21,6 +21,17 @@ export default class App extends Component {
         const { store, pageSlug } = this.props;
         store.setPageSlug(pageSlug);
         this.toggleMenu = this.toggleMenu.bind(this);
+        this.onGetSettings = this.onGetSettings.bind(this);
+    }
+
+    componentDidMount() {
+        this.ipcRenderer = window.require('electron').ipcRenderer;
+        this.ipcRenderer.send('getSettings');
+        this.ipcRenderer.on('getSettingsResult', this.onGetSettings);
+    }
+
+    onGetSettings(event, datas) {
+        datas !== undefined && this.props.store.setSettings(datas);
     }
 
     toggleMenu() {

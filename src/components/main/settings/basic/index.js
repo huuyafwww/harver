@@ -17,11 +17,6 @@ export default class Basic extends Component {
         this.getItems = this.getItems.bind(this);
     }
 
-    componentDidUpdate() {
-        const { status, resetStatus } = this.props;
-        status !== 'none' && resetStatus();
-    }
-
     getItems(label, input, span) {
         const { datas, type } = this.props;
         const onChange = this.props[input.onChange];

@@ -13,51 +13,31 @@ const SettingsWrapper = styled.div``;
 export default class Settings extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            status: 'none',
-            datas: SettingsConfig.inits,
-        };
-        this.onGetSettings = this.onGetSettings.bind(this);
+        this.state = {};
         this.onSave = this.onSave.bind(this);
         this.onChange = this.onChange.bind(this);
         this.saveResult = this.saveResult.bind(this);
-        this.resetStatus = this.resetStatus.bind(this);
         this.getTabItems = this.getTabItems.bind(this);
         this.getTabContents = this.getTabContents.bind(this);
     }
 
     componentDidMount() {
         this.ipcRenderer = window.require('electron').ipcRenderer;
-        this.ipcRenderer.send('getSettings');
-        this.ipcRenderer.on('getSettingsResult', this.onGetSettings);
         this.ipcRenderer.on('saveSettingsResult', this.saveResult);
     }
 
-    onGetSettings(event, datas) {
-        datas !== undefined && this.setState({ datas });
+    onSave() {
+        this.props.store.saveSettings();
     }
 
-    onSave(status = 'saving') {
-        const { datas } = this.state;
-        this.setState({ status });
-        this.ipcRenderer.send('saveSettings', datas);
-    }
-
-    onChange(e, status = 'changed') {
+    onChange(e) {
         const { name, value, dataset } = e.currentTarget;
-        const { datas } = this.state;
-        datas[dataset.type][name] = value;
-        this.setState({ status, datas });
+        this.props.store.editSettings(dataset.type, name, value);
     }
 
-    saveResult(event, result, status = 'saved') {
+    saveResult(event, result) {
         const { save } = SettingsConfig.toast;
-        this.setState({ status });
         toast.success('🎉 保存しました', save);
-    }
-
-    resetStatus(status = 'none') {
-        this.setState({ status });
     }
 
     getTabItems() {
@@ -79,7 +59,7 @@ export default class Settings extends Component {
 
     getTabContents() {
         const { onChange, onSave, resetStatus } = this;
-        const { status, datas } = this.state;
+        const { savedSettings } = this.props.store;
         const { types, components, items } = SettingsConfig;
         return (
             <Tab.Content>
@@ -91,8 +71,7 @@ export default class Settings extends Component {
                                 onSave={onSave}
                                 onChange={onChange}
                                 resetStatus={resetStatus}
-                                status={status}
-                                datas={datas[type]}
+                                datas={savedSettings[type]}
                                 type={type}
                                 items={items[type]}
                             />
