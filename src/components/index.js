@@ -16,7 +16,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpenMenu: true,
+            isOpenMenu: false,
         };
         const { store, pageSlug } = this.props;
         store.setPageSlug(pageSlug);

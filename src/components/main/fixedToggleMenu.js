@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
-import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs';
+import { BsList, BsX } from 'react-icons/bs';
 
 const FixedToggleMenuWrapper = styled.div`
-    font-size: 1.5em;
+    font-size: 1.8em;
     cursor: pointer;
     margin-left: 5px;
     position: fixed;
@@ -31,9 +31,7 @@ export default class FixedToggleMenu extends Component {
 
     render() {
         const { isOpenMenu } = this.props;
-        const IconComponent = isOpenMenu
-            ? BsChevronDoubleLeft
-            : BsChevronDoubleRight;
+        const IconComponent = isOpenMenu ? BsX : BsList;
         return (
             <FixedToggleMenuWrapper isOpenMenu={isOpenMenu}>
                 <IconComponent onClick={this.onClick} />
