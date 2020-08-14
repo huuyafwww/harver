@@ -18,8 +18,7 @@ export default class App extends Component {
         this.state = {
             isOpenMenu: false,
         };
-        const { store, pageSlug } = this.props;
-        store.setPageSlug(pageSlug);
+        this.store = this.props.store;
         this.toggleMenu = this.toggleMenu.bind(this);
         this.onGetSettings = this.onGetSettings.bind(this);
     }
@@ -28,11 +27,11 @@ export default class App extends Component {
         this.ipcRenderer = window.require('electron').ipcRenderer;
         this.ipcRenderer.send('getSettings');
         this.ipcRenderer.on('getSettingsResult', this.onGetSettings);
-        this.props.store.setIpcRenderer(this.ipcRenderer);
+        this.store.setIpcRenderer(this.ipcRenderer);
     }
 
     onGetSettings(event, datas) {
-        datas !== undefined && this.props.store.setSettings(datas);
+        datas !== undefined && this.store.setSettings(datas);
     }
 
     toggleMenu() {

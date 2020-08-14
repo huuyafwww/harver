@@ -13,6 +13,12 @@ export default class SidebarMenu extends Component {
         this.state = {};
         this.store = this.props.store;
         this.nowPageSlug = this.store.PageSlug;
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick(e) {
+        const { label } = e.currentTarget.dataset;
+        this.store.pageLinkToggle(label);
     }
 
     setPageLabel(Item) {
@@ -35,13 +41,16 @@ export default class SidebarMenu extends Component {
     getMenuItem(Item, key) {
         this.setPageLabel(Item);
         return (
-            <li key={key} className={this.getActiveItem(Item.slug)}>
-                <Link to={Item.link}>
-                    <div className="nav-link">
-                        <i className="far">{Item.icon}</i>
-                        <span>{Item.label}</span>
-                    </div>
-                </Link>
+            <li
+                key={key}
+                className={this.getActiveItem(Item.slug)}
+                onClick={this.onClick}
+                data-label={Item.label}
+            >
+                <div className="nav-link">
+                    <i className="far">{Item.icon}</i>
+                    <span>{Item.label}</span>
+                </div>
             </li>
         );
     }

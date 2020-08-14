@@ -26,17 +26,20 @@ export default class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.nowPageLabel = this.props.store.PageLabel;
-        this.setNowPageComponent(this.nowPageLabel, Components);
         this.SelectFile = this.SelectFile.bind(this);
+        this.setNowPageComponent = this.setNowPageComponent.bind(this);
     }
 
     componentDidMount() {
         this.ipcRenderer = window.require('electron').ipcRenderer;
     }
 
-    setNowPageComponent(nowPageLabel, Components) {
-        this.NowPageComponent = getNowPageComponent(nowPageLabel, Components);
+    setNowPageComponent() {
+        this.nowPageLabel = this.props.store.nowPageLink;
+        this.NowPageComponent = getNowPageComponent(
+            this.nowPageLabel,
+            Components
+        );
     }
 
     SelectFile() {
@@ -45,6 +48,7 @@ export default class Main extends Component {
     }
 
     render() {
+        this.setNowPageComponent();
         const { nowPageLabel, NowPageComponent } = this;
         const { isOpenMenu, toggleMenu } = this.props;
         return (

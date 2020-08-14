@@ -7,13 +7,7 @@ import Accordions from '@components/main/home/body/accordion';
 export default class HomeCardBody extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isLoaded: false,
-            openStatus: {
-                isOpenPageInfo: true,
-                isOpenPageResult: false,
-            },
-        };
+        this.state = {};
         this.store = this.props.store;
         this.onIpc = this.onIpc.bind(this);
         this.setHarFileData = this.setHarFileData.bind(this);
@@ -31,9 +25,9 @@ export default class HomeCardBody extends Component {
         harFileData !== undefined && this.setHarFileData(harFileData);
     }
 
-    setHarFileData(harData, isLoaded = true) {
+    setHarFileData(harData) {
         this.store.setHarFileData(harData);
-        this.setState({ isLoaded });
+        this.store.onLoadFirstHarFile();
     }
 
     setComponentOptions() {
@@ -53,21 +47,19 @@ export default class HomeCardBody extends Component {
     }
 
     getOpenStatus(toggleVarName) {
-        return this.state.openStatus[toggleVarName];
+        return this.store.nowOpenStatus[toggleVarName];
     }
 
     toggleAccordionIcon(toggleVarName) {
-        const { openStatus } = this.state;
-        openStatus[toggleVarName] = !openStatus[toggleVarName];
-        this.setState({ openStatus });
+        this.store.changeOpenStatus(toggleVarName);
     }
 
     render() {
-        const { isLoaded } = this.state;
-        isLoaded && this.setComponentOptions();
+        const isLoadFirstHarFile = this.store.LoadFirstHarFile;
+        isLoadFirstHarFile && this.setComponentOptions();
         return (
             <div>
-                {isLoaded && (
+                {isLoadFirstHarFile && (
                     <Accordions
                         ComponentOptions={this.ComponentOptions}
                         toggleAccordionIcon={this.toggleAccordionIcon}
