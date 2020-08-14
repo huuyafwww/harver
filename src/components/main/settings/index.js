@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { SettingsConfig } from '@config';
-import 'react-toastify/dist/ReactToastify.min.css';
 
 const SettingsWrapper = styled.div``;
 

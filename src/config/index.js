@@ -15,6 +15,16 @@ const timeFormatOption = 'YYYY年MM月DD日 HH時mm分ss秒';
 
 const sizes = ['B', 'KB', 'MB', 'GB'];
 
+const copyTextConfig = {
+    position: 'top-right',
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+};
+
 export {
     pagesInfo,
     SidebarConfig,
@@ -22,4 +32,5 @@ export {
     dialogOptions,
     timeFormatOption,
     sizes,
+    copyTextConfig,
 };

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Button, Accordion, Card } from 'react-bootstrap';
-import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
+import { BsCaretDown, BsCaretUp, BsFiles } from 'react-icons/bs';
+import { ToastContainer, toast } from 'react-toastify';
+import { copyTextConfig } from '@config';
 
 const toggleVarNames = ['isOpenRequestPanel', 'isOpenResponsePanel'];
 
@@ -13,6 +15,16 @@ const ToggleTitleWrapper = styled.span`
 const ToggleIconWrapper = styled.span`
     font-size: 2em;
     margin-left: 4px;
+`;
+
+const CopyIconWrapper = styled.span`
+    font-size: 1.25em;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    :hover {
+        color: #6777ef;
+    }
 `;
 
 @inject('store')
@@ -28,6 +40,18 @@ export default class HarDetailModal extends Component {
         };
         this.onClickAccordionToggle = this.onClickAccordionToggle.bind(this);
         this.toggleAccordionIcon = this.toggleAccordionIcon.bind(this);
+        this.onCopyData = this.onCopyData.bind(this);
+        this.clipboard = window.require('electron').clipboard;
+    }
+
+    onCopyData() {
+        const copyData = JSON.stringify(
+            this.props.showData.headers,
+            null,
+            '\t'
+        );
+        this.clipboard.writeText(copyData);
+        toast('🦄 コピーしました', copyTextConfig);
     }
 
     toggleAccordionIcon(toggleVarName) {
@@ -59,6 +83,10 @@ export default class HarDetailModal extends Component {
                         {(toggleVar && <BsCaretUp />) || <BsCaretDown />}
                     </ToggleIconWrapper>
                 </Accordion.Toggle>
+                <CopyIconWrapper onClick={this.onCopyData}>
+                    <BsFiles />
+                </CopyIconWrapper>
+                <ToastContainer />
             </Card.Header>
         );
     }

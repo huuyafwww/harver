@@ -17,6 +17,7 @@ export default class AccordionPanel extends Component {
             <div>
                 <AccordionToggle
                     eventKey={eventKey}
+                    showData={showData}
                     showDataLabel={showDataLabel}
                 />
                 <AccordionCollapse eventKey={eventKey} showData={showData} />
