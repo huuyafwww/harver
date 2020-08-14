@@ -31,7 +31,8 @@ export default class Accordions extends Component {
         super(props);
         this.state = {
             RowData: {},
-            isOpenColumn: false,
+            isOpenLeftColumn: true,
+            isOpenRightColumn: false,
             isOpenModal: false,
         };
         this.onClick = this.onClick.bind(this);
@@ -40,7 +41,8 @@ export default class Accordions extends Component {
         this.getModalInjectData = this.getModalInjectData.bind(this);
         this.changeColumnStatus = this.changeColumnStatus.bind(this);
         this.changeModalStatus = this.changeModalStatus.bind(this);
-        this.toggleColumn = this.toggleColumn.bind(this);
+        this.toggleRightColumn = this.toggleRightColumn.bind(this);
+        this.toggleLeftColumn = this.toggleLeftColumn.bind(this);
         this.resetStatus = this.resetStatus.bind(this);
     }
 
@@ -49,9 +51,19 @@ export default class Accordions extends Component {
         onLoadNewHarFile && this.resetStatus();
     }
 
-    resetStatus(RowData = {}, isOpenColumn = false, isOpenModal = false) {
+    resetStatus(
+        RowData = {},
+        isOpenLeftColumn = true,
+        isOpenRightColumn = false,
+        isOpenModal = false
+    ) {
         this.props.store.onLoadNewHarFile = false;
-        this.setState({ RowData, isOpenColumn, isOpenModal });
+        this.setState({
+            RowData,
+            isOpenLeftColumn,
+            isOpenRightColumn,
+            isOpenModal,
+        });
     }
 
     onClick(e) {
@@ -59,13 +71,18 @@ export default class Accordions extends Component {
         this.props.toggleAccordionIcon(toggleVarName);
     }
 
-    changeColumnStatus(RowData, isOpenColumn) {
-        this.setState({ RowData, isOpenColumn });
+    changeColumnStatus(RowData, isOpenRightColumn) {
+        this.setState({ RowData, isOpenRightColumn });
     }
 
-    toggleColumn() {
-        const isOpenColumn = !this.state.isOpenColumn;
-        this.setState({ isOpenColumn });
+    toggleLeftColumn() {
+        const isOpenLeftColumn = !this.state.isOpenLeftColumn;
+        this.setState({ isOpenLeftColumn });
+    }
+
+    toggleRightColumn() {
+        const isOpenRightColumn = !this.state.isOpenRightColumn;
+        this.setState({ isOpenRightColumn });
     }
 
     changeModalStatus(RowData, isOpenModal) {
@@ -124,10 +141,15 @@ export default class Accordions extends Component {
     }
 
     render() {
-        const { getAccordionToggle, getAccordionCollapse, toggleColumn } = this;
+        const {
+            getAccordionToggle,
+            getAccordionCollapse,
+            toggleRightColumn,
+            toggleLeftColumn,
+        } = this;
         const { ComponentOptions } = this.props;
         const { isColumnDisplayRow } = this.props.store;
-        const { isOpenColumn, RowData } = this.state;
+        const { isOpenRightColumn, isOpenLeftColumn, RowData } = this.state;
         const isExistsRowData = Object.keys(RowData).length !== 0;
         return (
             <Accordion defaultActiveKey="0">
@@ -137,28 +159,48 @@ export default class Accordions extends Component {
                     const eventKey = String(key);
                     const isResult = ComponentName === 'HomeCardBodyBody';
                     const isColumn = isColumnDisplayRow && isResult;
-                    const resultCol = isColumn && isOpenColumn ? 8 : 12;
+                    const resultCol = isColumn && isOpenRightColumn ? 8 : 12;
+                    const detailCol = isColumn && isOpenLeftColumn ? 4 : 12;
                     return (
                         <Row key={key}>
                             <Col md={resultCol}>
-                                <Card>
-                                    {getAccordionToggle(eventKey, targetOption)}
-                                    {getAccordionCollapse(
-                                        eventKey,
-                                        targetOption,
-                                        isResult
-                                    )}
-                                </Card>
-                                {isColumn && isExistsRowData && (
+                                {((isColumn && isOpenLeftColumn) ||
+                                    !isColumnDisplayRow ||
+                                    !isResult) && (
+                                    <Card>
+                                        {getAccordionToggle(
+                                            eventKey,
+                                            targetOption
+                                        )}
+                                        {getAccordionCollapse(
+                                            eventKey,
+                                            targetOption,
+                                            isResult
+                                        )}
+                                    </Card>
+                                )}
+                                {isColumn && (
                                     <FixedToggleMenu
-                                        isOpenColumn={isOpenColumn}
-                                        toggleColumn={toggleColumn}
+                                        position="Left"
+                                        isOpenLeftColumn={isOpenLeftColumn}
+                                        toggleLeftColumn={toggleLeftColumn}
                                     />
                                 )}
                             </Col>
-                            {isColumn && isOpenColumn && (
-                                <Col md={4}>
+                            {isColumn && isOpenRightColumn && (
+                                <Col md={detailCol}>
                                     <ColumnPanel RowData={RowData} />
+                                    {isColumn && isExistsRowData && (
+                                        <FixedToggleMenu
+                                            position="Right"
+                                            isOpenRightColumn={
+                                                isOpenRightColumn
+                                            }
+                                            toggleRightColumn={
+                                                toggleRightColumn
+                                            }
+                                        />
+                                    )}
                                 </Col>
                             )}
                         </Row>

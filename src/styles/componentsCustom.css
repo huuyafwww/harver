@@ -63,9 +63,13 @@ table.table {
 
 .table:not(.table-sm):not(.table-md):not(.dataTable) td,
 .table:not(.table-sm):not(.table-md):not(.dataTable) th {
-    height: 35px;
+    height: auto;
 }
 
 .section .section-header {
     justify-content: space-between;
+}
+
+.table-striped tbody tr:nth-of-type(odd):hover {
+    background-color: rgba(0, 0, 0, 0.075);
 }

@@ -10,6 +10,10 @@ const TableStyle = {
     marginBottom: 0,
 };
 
+const thStyle = {
+    cursor: 'pointer',
+};
+
 @inject('store')
 @observer
 export default class HomeCardBodyBody extends Component {
@@ -35,13 +39,13 @@ export default class HomeCardBodyBody extends Component {
         const { request, response } = data;
         const byteSize = byte2SizeString(response.content.size);
         return (
-            <tr key={key} onClick={this.onClick} data-key={key}>
+            <tr key={key} onClick={this.onClick} data-key={key} style={thStyle}>
                 <td>{getTooltip(request.url)}</td>
-                <td>{request.method}</td>
-                <td>{response.status}</td>
-                <td>{response.content.mimeType}</td>
-                <td>{data._resourceType}</td>
-                <td>{byteSize}</td>
+                <td>{getTooltip(request.method)}</td>
+                <td>{getTooltip(response.status)}</td>
+                <td>{getTooltip(response.content.mimeType)}</td>
+                <td>{getTooltip(data._resourceType)}</td>
+                <td>{getTooltip(byteSize)}</td>
             </tr>
         );
     }
