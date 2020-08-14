@@ -3,7 +3,9 @@ import { HarService } from '@services';
 import { SettingsConfig } from '@config';
 
 export default class Store {
-    constructor() {}
+    constructor() {
+        this.onLoadNewHarFile = false;
+    }
 
     setIpcRenderer(ipcRenderer) {
         this.ipcRenderer = ipcRenderer;

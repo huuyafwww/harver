@@ -7,6 +7,7 @@ import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
 import HomeCardBodyBody from '@components/main/home/body/body';
 import ColumnPanel from '@components/main/home/body/body/column';
+import FixedToggleMenu from '@components/main/home/body/body/fixedToggleMenu';
 
 const ToggleTitleWrapper = styled.span`
     font-size: 1.3em;
@@ -39,6 +40,18 @@ export default class Accordions extends Component {
         this.getModalInjectData = this.getModalInjectData.bind(this);
         this.changeColumnStatus = this.changeColumnStatus.bind(this);
         this.changeModalStatus = this.changeModalStatus.bind(this);
+        this.toggleColumn = this.toggleColumn.bind(this);
+        this.resetStatus = this.resetStatus.bind(this);
+    }
+
+    componentDidUpdate() {
+        const { onLoadNewHarFile } = this.props.store;
+        onLoadNewHarFile && this.resetStatus();
+    }
+
+    resetStatus(RowData = {}, isOpenColumn = false, isOpenModal = false) {
+        this.props.store.onLoadNewHarFile = false;
+        this.setState({ RowData, isOpenColumn, isOpenModal });
     }
 
     onClick(e) {
@@ -48,6 +61,11 @@ export default class Accordions extends Component {
 
     changeColumnStatus(RowData, isOpenColumn) {
         this.setState({ RowData, isOpenColumn });
+    }
+
+    toggleColumn() {
+        const isOpenColumn = !this.state.isOpenColumn;
+        this.setState({ isOpenColumn });
     }
 
     changeModalStatus(RowData, isOpenModal) {
@@ -106,10 +124,11 @@ export default class Accordions extends Component {
     }
 
     render() {
-        const { getAccordionToggle, getAccordionCollapse } = this;
+        const { getAccordionToggle, getAccordionCollapse, toggleColumn } = this;
         const { ComponentOptions } = this.props;
         const { isColumnDisplayRow } = this.props.store;
         const { isOpenColumn, RowData } = this.state;
+        const isExistsRowData = Object.keys(RowData).length !== 0;
         return (
             <Accordion defaultActiveKey="0">
                 {Components.map((Component, key) => {
@@ -118,7 +137,7 @@ export default class Accordions extends Component {
                     const eventKey = String(key);
                     const isResult = ComponentName === 'HomeCardBodyBody';
                     const isColumn = isColumnDisplayRow && isResult;
-                    const resultCol = isColumn ? 8 : 12;
+                    const resultCol = isColumn && isOpenColumn ? 8 : 12;
                     return (
                         <Row key={key}>
                             <Col md={resultCol}>
@@ -130,6 +149,12 @@ export default class Accordions extends Component {
                                         isResult
                                     )}
                                 </Card>
+                                {isColumn && isExistsRowData && (
+                                    <FixedToggleMenu
+                                        isOpenColumn={isOpenColumn}
+                                        toggleColumn={toggleColumn}
+                                    />
+                                )}
                             </Col>
                             {isColumn && isOpenColumn && (
                                 <Col md={4}>

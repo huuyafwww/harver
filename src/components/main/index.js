@@ -40,6 +40,7 @@ export default class Main extends Component {
     }
 
     SelectFile() {
+        this.props.store.onLoadNewHarFile = true;
         this.ipcRenderer.send('OpenHarFile');
     }
 

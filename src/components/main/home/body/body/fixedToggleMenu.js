@@ -6,11 +6,10 @@ import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs';
 const FixedToggleMenuWrapper = styled.div`
     font-size: 1.5em;
     margin-left: 5px;
-    position: fixed;
-    left: ${({ isOpenMenu }) => (isOpenMenu && '250') || '0'}px;
+    position: absolute;
+    right: -10px;
     top: 0;
     z-index: 1;
-    transition: all 400ms 0s ease;
 `;
 
 const ToggleIconStyle = {};
@@ -25,16 +24,16 @@ export default class FixedToggleMenu extends Component {
     }
 
     onClick() {
-        this.props.toggleMenu();
+        this.props.toggleColumn();
     }
 
     render() {
-        const { isOpenMenu } = this.props;
-        const IconComponent = isOpenMenu
+        const { isOpenColumn } = this.props;
+        const IconComponent = isOpenColumn
             ? BsChevronDoubleLeft
             : BsChevronDoubleRight;
         return (
-            <FixedToggleMenuWrapper isOpenMenu={isOpenMenu}>
+            <FixedToggleMenuWrapper isOpenColumn={isOpenColumn}>
                 <IconComponent onClick={this.onClick} />
             </FixedToggleMenuWrapper>
         );

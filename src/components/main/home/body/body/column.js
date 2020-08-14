@@ -3,6 +3,11 @@ import { inject, observer } from 'mobx-react';
 import { Accordion, Card } from 'react-bootstrap';
 import { getMainHarViewAccordion } from '@helpers';
 
+const AccordionStyle = {
+    position: 'sticky',
+    top: 0,
+};
+
 @inject('store')
 @observer
 export default class ColumnPanel extends Component {
@@ -14,7 +19,7 @@ export default class ColumnPanel extends Component {
     render() {
         const { request, response } = this.props.RowData;
         return (
-            <Accordion>
+            <Accordion style={AccordionStyle}>
                 <Card>{getMainHarViewAccordion([request, response])}</Card>
             </Accordion>
         );
