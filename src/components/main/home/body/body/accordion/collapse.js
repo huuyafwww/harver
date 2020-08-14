@@ -40,11 +40,11 @@ export default class AccordionCollapse extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {Rows.map((Row, key) => {
+                    {Rows.map((RowData, key) => {
                         return (
                             <tr key={key}>
-                                <td>{Row.name}</td>
-                                <td>{getTooltip(Row.value)}</td>
+                                <td>{RowData.name}</td>
+                                <td>{getTooltip(RowData.value)}</td>
                             </tr>
                         );
                     })}

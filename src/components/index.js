@@ -28,6 +28,7 @@ export default class App extends Component {
         this.ipcRenderer = window.require('electron').ipcRenderer;
         this.ipcRenderer.send('getSettings');
         this.ipcRenderer.on('getSettingsResult', this.onGetSettings);
+        this.props.store.setIpcRenderer(this.ipcRenderer);
     }
 
     onGetSettings(event, datas) {

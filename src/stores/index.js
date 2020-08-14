@@ -3,8 +3,10 @@ import { HarService } from '@services';
 import { SettingsConfig } from '@config';
 
 export default class Store {
-    constructor() {
-        this.ipcRenderer = window.require('electron').ipcRenderer;
+    constructor() {}
+
+    setIpcRenderer(ipcRenderer) {
+        this.ipcRenderer = ipcRenderer;
     }
 
     setPageSlug(pageSlug) {
@@ -36,5 +38,9 @@ export default class Store {
     saveSettings() {
         const Settings = toJS(this.Settings);
         this.ipcRenderer.send('saveSettings', Settings);
+    }
+
+    @computed get isColumnDisplayRow() {
+        return this.Settings.Basic.displayRow === 'Column';
     }
 }

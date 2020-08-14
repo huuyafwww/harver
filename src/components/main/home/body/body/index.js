@@ -15,40 +15,32 @@ const TableStyle = {
 export default class HomeCardBodyBody extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            Rows: this.props.har,
-            Row: {},
-            isOpenModal: false,
-        };
+        this.state = {};
+        this.ColumnDisplayRow = this.props.store.isColumnDisplayRow;
         this.getRow = this.getRow.bind(this);
-        this.openModal = this.openModal.bind(this);
+        this.onClick = this.onClick.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.changeModalStatus = this.changeModalStatus.bind(this);
     }
 
-    openModal(e) {
+    onClick(e) {
         const { key } = e.currentTarget.dataset;
-        this.changeModalStatus(this.state.Rows[key], true);
+        this.props.onChangeStatus(this.props.har[key], true);
     }
 
     closeModal() {
-        this.changeModalStatus({}, false);
+        this.props.onChangeStatus({}, false);
     }
 
-    changeModalStatus(Row, isOpenModal) {
-        this.setState({ Row, isOpenModal });
-    }
-
-    getRow(Row, key) {
-        const { request, response } = Row;
+    getRow(data, key) {
+        const { request, response } = data;
         const byteSize = byte2SizeString(response.content.size);
         return (
-            <tr key={key} onClick={this.openModal} data-key={key}>
+            <tr key={key} onClick={this.onClick} data-key={key}>
                 <td>{getTooltip(request.url)}</td>
                 <td>{request.method}</td>
                 <td>{response.status}</td>
                 <td>{response.content.mimeType}</td>
-                <td>{Row._resourceType}</td>
+                <td>{data._resourceType}</td>
                 <td>{byteSize}</td>
             </tr>
         );
@@ -56,8 +48,8 @@ export default class HomeCardBodyBody extends Component {
 
     render() {
         const { closeModal } = this;
-        const { Row, isOpenModal } = this.state;
-        const { har } = this.props;
+        const { RowData, isOpenModal, har } = this.props;
+        const { isColumnDisplayRow } = this;
         return (
             <div>
                 <Table style={TableStyle} striped bordered hover responsive>
@@ -72,13 +64,13 @@ export default class HomeCardBodyBody extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {har.map((Row, key) => {
-                            return this.getRow(Row, key);
+                        {har.map((data, key) => {
+                            return this.getRow(data, key);
                         })}
                     </tbody>
                 </Table>
-                {isOpenModal && (
-                    <HarDetailModal Row={Row} closeModal={closeModal} />
+                {isOpenModal && !isColumnDisplayRow && (
+                    <HarDetailModal RowData={RowData} closeModal={closeModal} />
                 )}
             </div>
         );

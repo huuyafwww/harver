@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
-import AccordionPanel from '@components/main/home/body/body/modal/accordion';
-
-const showDataLabels = ['request', 'response'];
+import { getMainHarViewAccordion } from '@helpers';
 
 @inject('store')
 @observer
@@ -38,18 +36,7 @@ export default class HarDetailModal extends Component {
         return (
             <Modal.Body>
                 <Accordion>
-                    {showDataLabels.map((showDataLabel, key) => {
-                        const eventKey = String(key);
-                        const showData = showDatas[key];
-                        return (
-                            <AccordionPanel
-                                key={eventKey}
-                                eventKey={eventKey}
-                                showDataLabel={showDataLabel}
-                                showData={showData}
-                            />
-                        );
-                    })}
+                    <Card>{getMainHarViewAccordion(showDatas)}</Card>
                 </Accordion>
             </Modal.Body>
         );
@@ -69,8 +56,7 @@ export default class HarDetailModal extends Component {
     render() {
         const { handleClose } = this;
         const { show } = this.state;
-        const { Row } = this.props;
-        const { request, response } = Row;
+        const { request, response } = this.props.RowData;
         return (
             <div>
                 <Modal

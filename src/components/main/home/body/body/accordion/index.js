@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Card } from 'react-bootstrap';
-import AccordionToggle from '@components/main/home/body/body/modal/accordionToggle';
-import AccordionCollapse from '@components/main/home/body/body/modal/accordionCollapse';
+import AccordionToggle from '@components/main/home/body/body/accordion/toggle';
+import AccordionCollapse from '@components/main/home/body/body/accordion/collapse';
 
 @inject('store')
 @observer
@@ -15,13 +14,13 @@ export default class AccordionPanel extends Component {
     render() {
         const { eventKey, showDataLabel, showData } = this.props;
         return (
-            <Card>
+            <div>
                 <AccordionToggle
                     eventKey={eventKey}
                     showDataLabel={showDataLabel}
                 />
                 <AccordionCollapse eventKey={eventKey} showData={showData} />
-            </Card>
+            </div>
         );
     }
 }

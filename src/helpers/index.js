@@ -1,6 +1,7 @@
 import React from 'react';
 import { sizes } from '@config';
 import { millisecond2second, date2time } from '@helpers/time';
+import { getMainHarViewAccordion } from '@helpers/accordion';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -56,4 +57,5 @@ export {
     millisecond2second,
     date2time,
     getTooltip,
+    getMainHarViewAccordion,
 };
