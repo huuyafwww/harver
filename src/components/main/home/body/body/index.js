@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 import { byte2SizeString, getTooltip } from '@helpers';
 import HarDetailModal from '@components/main/home/body/body/modal';
+import HarResultTimeLine from '@components/main/home/body/body/timeline';
 
-const TableStyle = {
-    tableLayout: 'fixed',
-    marginBottom: 0,
-};
+const HarResultWrapper = styled.div`
+    display: flex;
+`;
+
+const TableWrapper = styled.div`
+    width: ${({ isShowWaterfall }) => {
+        return isShowWaterfall ? '50%;' : '100%';
+    }};
+    table.table {
+        table-layout: fixed;
+        margin-bottom: 0;
+    }
+`;
 
 const thStyle = {
     cursor: 'pointer',
 };
+
+const TimelineWrapper = styled.div`
+    width: 50%;
+`;
 
 @inject('store')
 @observer
 export default class HomeCardBodyBody extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            resultTableWrapperHeight: 0,
+            resultTableTheadHeight: 0,
+        };
         this.ColumnDisplayRow = this.props.store.isColumnDisplayRow;
         this.getRow = this.getRow.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -51,32 +68,53 @@ export default class HomeCardBodyBody extends Component {
     }
 
     render() {
-        const { closeModal } = this;
-        const { RowData, isOpenModal, har } = this.props;
-        const { isColumnDisplayRow } = this;
+        const { closeModal, isColumnDisplayRow } = this;
+        const { RowData, isOpenModal, har, isShowWaterfall } = this.props;
         return (
-            <div>
-                <Table style={TableStyle} striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Method</th>
-                            <th>Status</th>
-                            <th>MIME Type</th>
-                            <th>Resource Type</th>
-                            <th>Size</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {har.map((data, key) => {
-                            return this.getRow(data, key);
-                        })}
-                    </tbody>
-                </Table>
+            <HarResultWrapper>
+                <TableWrapper
+                    isShowWaterfall={isShowWaterfall}
+                    id="resultTableWrapper"
+                    ref={ele => {
+                        this.resultTableWrapperElement = ele;
+                    }}
+                >
+                    <Table striped bordered hover responsive>
+                        <thead>
+                            <tr
+                                id="resultTableThead"
+                                ref={ele => {
+                                    this.resultTableTheadElement = ele;
+                                }}
+                            >
+                                <th>Name</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>MIME Type</th>
+                                <th>Resource Type</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {har.map((data, key) => {
+                                return this.getRow(data, key);
+                            })}
+                        </tbody>
+                    </Table>
+                </TableWrapper>
+                {isShowWaterfall && (
+                    <HarResultTimeLine
+                        har={har}
+                        resultTableWrapperElement={
+                            this.resultTableWrapperElement
+                        }
+                        resultTableTheadElement={this.resultTableTheadElement}
+                    />
+                )}
                 {isOpenModal && !isColumnDisplayRow && (
                     <HarDetailModal RowData={RowData} closeModal={closeModal} />
                 )}
-            </div>
+            </HarResultWrapper>
         );
     }
 }

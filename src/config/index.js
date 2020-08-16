@@ -25,6 +25,14 @@ const copyTextConfig = {
     progress: undefined,
 };
 
+const timelineChartConfig = [
+    { type: 'string', id: 'Row Label' },
+    { type: 'string', id: 'Bar Label' },
+    { type: 'string', role: 'tooltip' },
+    { type: 'date', id: 'Start' },
+    { type: 'date', id: 'End' },
+];
+
 export {
     pagesInfo,
     SidebarConfig,
@@ -33,4 +41,5 @@ export {
     timeFormatOption,
     sizes,
     copyTextConfig,
+    timelineChartConfig,
 };

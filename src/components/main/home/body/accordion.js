@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Accordion, Card, Button, Row, Col } from 'react-bootstrap';
-import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
+import { BsCaretDown, BsCaretUp, BsFillBarChartFill } from 'react-icons/bs';
 import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
 import HomeCardBodyBody from '@components/main/home/body/body';
@@ -16,6 +16,19 @@ const ToggleTitleWrapper = styled.span`
 const ToggleIconWrapper = styled.span`
     font-size: 2em;
     margin-left: 4px;
+`;
+
+const ChartIconWrapper = styled.span`
+    ${({ isShowWaterfall }) => {
+        if (isShowWaterfall) return 'color: #6777ef;';
+    }}
+    font-size: 1.25em;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    :hover {
+        color: #6777ef;
+    }
 `;
 
 const CardBodyStyle = {
@@ -34,8 +47,10 @@ export default class Accordions extends Component {
             isOpenLeftColumn: true,
             isOpenRightColumn: false,
             isOpenModal: false,
+            isShowWaterfall: false,
         };
         this.onClick = this.onClick.bind(this);
+        this.toggleWaterfall = this.toggleWaterfall.bind(this);
         this.getAccordionToggle = this.getAccordionToggle.bind(this);
         this.getAccordionCollapse = this.getAccordionCollapse.bind(this);
         this.getModalInjectData = this.getModalInjectData.bind(this);
@@ -71,6 +86,11 @@ export default class Accordions extends Component {
         this.props.toggleAccordionIcon(toggleVarName);
     }
 
+    toggleWaterfall() {
+        const isShowWaterfall = !this.state.isShowWaterfall;
+        this.setState({ isShowWaterfall });
+    }
+
     changeColumnStatus(RowData, isOpenRightColumn) {
         this.setState({ RowData, isOpenRightColumn });
     }
@@ -89,7 +109,8 @@ export default class Accordions extends Component {
         this.setState({ RowData, isOpenModal });
     }
 
-    getAccordionToggle(eventKey, targetOption) {
+    getAccordionToggle(eventKey, targetOption, isColumn) {
+        const { isShowWaterfall } = this.state;
         const { toggleVarName, title } = targetOption;
         const toggleVar = this.props.getOpenStatus(toggleVarName);
         return (
@@ -106,6 +127,14 @@ export default class Accordions extends Component {
                         {(toggleVar && <BsCaretUp />) || <BsCaretDown />}
                     </ToggleIconWrapper>
                 </Accordion.Toggle>
+                {isColumn && (
+                    <ChartIconWrapper
+                        onClick={this.toggleWaterfall}
+                        isShowWaterfall={isShowWaterfall}
+                    >
+                        <BsFillBarChartFill />
+                    </ChartIconWrapper>
+                )}
             </Card.Header>
         );
     }
@@ -113,7 +142,7 @@ export default class Accordions extends Component {
     getModalInjectData(har) {
         const { isColumnDisplayRow } = this.props.store;
         const { changeColumnStatus, changeModalStatus } = this;
-        const { RowData, isOpenModal } = this.state;
+        const { RowData, isOpenModal, isShowWaterfall } = this.state;
         const onChangeStatus = isColumnDisplayRow
             ? changeColumnStatus
             : changeModalStatus;
@@ -122,6 +151,7 @@ export default class Accordions extends Component {
             RowData,
             isOpenModal,
             onChangeStatus,
+            isShowWaterfall,
         };
     }
 
@@ -170,7 +200,8 @@ export default class Accordions extends Component {
                                     <Card>
                                         {getAccordionToggle(
                                             eventKey,
-                                            targetOption
+                                            targetOption,
+                                            isColumn
                                         )}
                                         {getAccordionCollapse(
                                             eventKey,

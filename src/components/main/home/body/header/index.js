@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
-import { millisecond2second, date2time } from '@helpers';
+import { ms2s, date2time } from '@helpers';
 
 const TableStyle = {
     marginBottom: 0,
@@ -21,8 +21,8 @@ export default class HomeCardBodyHeader extends Component {
         const url = har.title;
         const date = date2time(har.startedDateTime);
         const { pageTimings } = har;
-        const onContentLoad = millisecond2second(pageTimings.onContentLoad);
-        const onLoad = millisecond2second(pageTimings.onLoad);
+        const onContentLoad = ms2s(pageTimings.onContentLoad);
+        const onLoad = ms2s(pageTimings.onLoad);
         this.setState({ date, url, onContentLoad, onLoad });
     }
 

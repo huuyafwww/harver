@@ -1,6 +1,6 @@
 import React from 'react';
 import { sizes } from '@config';
-import { millisecond2second, date2time } from '@helpers/time';
+import { ms2s, date2time } from '@helpers/time';
 import { getMainHarViewAccordion } from '@helpers/accordion';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -54,7 +54,7 @@ export {
     getComponentName,
     getNowPageComponent,
     byte2SizeString,
-    millisecond2second,
+    ms2s,
     date2time,
     getTooltip,
     getMainHarViewAccordion,
