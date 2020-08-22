@@ -41,10 +41,14 @@ const byte2SizeString = (byte, unit = 1024, roundDigit = 10) => {
     return `${roundedByte}${size}`;
 };
 
-const getTooltip = text => {
+const getTooltip = (displayText, overlayText = false) => {
+    if (!overlayText) overlayText = displayText;
     return (
-        <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
-            <DisplayText>{text}</DisplayText>
+        <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>{overlayText}</Tooltip>}
+        >
+            <DisplayText>{displayText}</DisplayText>
         </OverlayTrigger>
     );
 };

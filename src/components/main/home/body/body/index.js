@@ -5,17 +5,15 @@ import { Table } from 'react-bootstrap';
 import { byte2SizeString, getTooltip } from '@helpers';
 import HarDetailModal from '@components/main/home/body/body/modal';
 import HarResultTimeLine from '@components/main/home/body/body/timeline';
+const parseUrl = require('url-parse');
 
 const HarResultWrapper = styled.div`
     display: flex;
 `;
 
 const TableWrapper = styled.div`
-    width: ${({ isShowWaterfall }) => {
-        return isShowWaterfall ? '50%;' : '100%';
-    }};
+    width: 100%;
     table.table {
-        table-layout: fixed;
         margin-bottom: 0;
     }
 `;
@@ -33,10 +31,7 @@ const TimelineWrapper = styled.div`
 export default class HomeCardBodyBody extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            resultTableWrapperHeight: 0,
-            resultTableTheadHeight: 0,
-        };
+        this.state = {};
         this.ColumnDisplayRow = this.props.store.isColumnDisplayRow;
         this.getRow = this.getRow.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -52,65 +47,84 @@ export default class HomeCardBodyBody extends Component {
         this.props.onChangeStatus({}, false);
     }
 
-    getRow(data, key) {
-        const { request, response } = data;
-        const byteSize = byte2SizeString(response.content.size);
+    getRow(
+        data,
+        key,
+        har,
+        isShowWaterfall,
+        isShowMethod,
+        isShowStatus,
+        isShowMimeType,
+        isShowResourceType,
+        isShowSize
+    ) {
+        const { request, response, _resourceType } = data;
+        const { url, method } = request;
+        const { status, content } = response;
+        const { size, mimeType } = content;
+        const byteSize = byte2SizeString(size);
+        const { hostname } = new parseUrl(url);
         return (
             <tr key={key} onClick={this.onClick} data-key={key} style={thStyle}>
-                <td>{getTooltip(request.url)}</td>
-                <td>{getTooltip(request.method)}</td>
-                <td>{getTooltip(response.status)}</td>
-                <td>{getTooltip(response.content.mimeType)}</td>
-                <td>{getTooltip(data._resourceType)}</td>
-                <td>{getTooltip(byteSize)}</td>
+                <td>{getTooltip(hostname, url)}</td>
+                {isShowMethod && <td>{getTooltip(method)}</td>}
+                {isShowStatus && <td>{getTooltip(status)}</td>}
+                {isShowMimeType && <td>{getTooltip(mimeType)}</td>}
+                {isShowResourceType && <td>{getTooltip(_resourceType)}</td>}
+                {isShowSize && <td>{getTooltip(byteSize)}</td>}
+                {key === 0 && isShowWaterfall && (
+                    <HarResultTimeLine har={har} />
+                )}
             </tr>
         );
     }
 
     render() {
         const { closeModal, isColumnDisplayRow } = this;
-        const { RowData, isOpenModal, har, isShowWaterfall } = this.props;
+        const {
+            RowData,
+            isOpenModal,
+            har,
+            isShowWaterfall,
+            isShowMethod,
+            isShowStatus,
+            isShowMimeType,
+            isShowResourceType,
+            isShowSize,
+        } = this.props;
+        console.log(this.props);
         return (
             <HarResultWrapper>
-                <TableWrapper
-                    isShowWaterfall={isShowWaterfall}
-                    id="resultTableWrapper"
-                    ref={ele => {
-                        this.resultTableWrapperElement = ele;
-                    }}
-                >
+                <TableWrapper>
                     <Table striped bordered hover responsive>
                         <thead>
-                            <tr
-                                id="resultTableThead"
-                                ref={ele => {
-                                    this.resultTableTheadElement = ele;
-                                }}
-                            >
+                            <tr>
                                 <th>Name</th>
-                                <th>Method</th>
-                                <th>Status</th>
-                                <th>MIME Type</th>
-                                <th>Resource Type</th>
-                                <th>Size</th>
+                                {isShowMethod && <th>Method</th>}
+                                {isShowStatus && <th>Status</th>}
+                                {isShowMimeType && <th>MIME Type</th>}
+                                {isShowResourceType && <th>Resource Type</th>}
+                                {isShowSize && <th>Size</th>}
+                                {isShowWaterfall && <th>Waterfall</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {har.map((data, key) => {
-                                return this.getRow(data, key);
+                                return this.getRow(
+                                    data,
+                                    key,
+                                    har,
+                                    isShowWaterfall,
+                                    isShowMethod,
+                                    isShowStatus,
+                                    isShowMimeType,
+                                    isShowResourceType,
+                                    isShowSize
+                                );
                             })}
                         </tbody>
                     </Table>
                 </TableWrapper>
-                {isShowWaterfall && (
-                    <HarResultTimeLine
-                        har={har}
-                        resultTableWrapperElement={
-                            this.resultTableWrapperElement
-                        }
-                        resultTableTheadElement={this.resultTableTheadElement}
-                    />
-                )}
                 {isOpenModal && !isColumnDisplayRow && (
                     <HarDetailModal RowData={RowData} closeModal={closeModal} />
                 )}
