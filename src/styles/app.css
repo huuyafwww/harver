@@ -19,3 +19,7 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+.table:not(.table-sm):not(.table-md):not(.dataTable) td#waterfallGraph {
+    padding: 0;
+}

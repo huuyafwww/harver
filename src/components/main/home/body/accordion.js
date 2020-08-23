@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Accordion, Card, Button, Row, Col } from 'react-bootstrap';
-import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
+import { BsCaretDown, BsCaretUp, BsFillBarChartFill } from 'react-icons/bs';
+import { harResultConfig } from '@config';
 import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
 import HomeCardBodyBody from '@components/main/home/body/body';
 import ColumnPanel from '@components/main/home/body/body/column';
 import FixedToggleMenu from '@components/main/home/body/body/fixedToggleMenu';
+
+const { resultColumn, isShow } = harResultConfig;
 
 const ToggleTitleWrapper = styled.span`
     font-size: 1.3em;
@@ -16,6 +19,34 @@ const ToggleTitleWrapper = styled.span`
 const ToggleIconWrapper = styled.span`
     font-size: 2em;
     margin-left: 4px;
+`;
+
+const CardHeaderStyle = {
+    justifyContent: 'space-between',
+};
+
+const ChartIconWrapper = styled.div`
+    cursor: pointer;
+    display: flex;
+`;
+
+const ToggleButtonWrapper = styled.div`
+    margin-right: 0.7em;
+    span.badge.badge-primary {
+        background-color: ${({ isShow }) => {
+            return isShow ? '#6777ef' : '#6c757d';
+        }};
+    }
+`;
+
+const BsFillBarChartFillWrapper = styled.span`
+    ${({ isShowWaterfall }) => {
+        if (isShowWaterfall) return 'color: #6777ef;';
+    }}
+    font-size: 1.25em;
+    :hover {
+        color: #6777ef;
+    }
 `;
 
 const CardBodyStyle = {
@@ -34,8 +65,20 @@ export default class Accordions extends Component {
             isOpenLeftColumn: true,
             isOpenRightColumn: false,
             isOpenModal: false,
+            isShowWaterfall: false,
+            isShowMethod: true,
+            isShowStatus: true,
+            isShowMimeType: true,
+            isShowResourceType: true,
+            isShowSize: true,
         };
         this.onClick = this.onClick.bind(this);
+        this.toggleWaterfall = this.toggleWaterfall.bind(this);
+        this.toggleMethod = this.toggleMethod.bind(this);
+        this.toggleStatus = this.toggleStatus.bind(this);
+        this.toggleMimeType = this.toggleMimeType.bind(this);
+        this.toggleResourceType = this.toggleResourceType.bind(this);
+        this.toggleSize = this.toggleSize.bind(this);
         this.getAccordionToggle = this.getAccordionToggle.bind(this);
         this.getAccordionCollapse = this.getAccordionCollapse.bind(this);
         this.getModalInjectData = this.getModalInjectData.bind(this);
@@ -71,6 +114,36 @@ export default class Accordions extends Component {
         this.props.toggleAccordionIcon(toggleVarName);
     }
 
+    toggleMethod() {
+        const isShowMethod = !this.state.isShowMethod;
+        this.setState({ isShowMethod });
+    }
+
+    toggleStatus() {
+        const isShowStatus = !this.state.isShowStatus;
+        this.setState({ isShowStatus });
+    }
+
+    toggleMimeType() {
+        const isShowMimeType = !this.state.isShowMimeType;
+        this.setState({ isShowMimeType });
+    }
+
+    toggleResourceType() {
+        const isShowResourceType = !this.state.isShowResourceType;
+        this.setState({ isShowResourceType });
+    }
+
+    toggleSize() {
+        const isShowSize = !this.state.isShowSize;
+        this.setState({ isShowSize });
+    }
+
+    toggleWaterfall() {
+        const isShowWaterfall = !this.state.isShowWaterfall;
+        this.setState({ isShowWaterfall });
+    }
+
     changeColumnStatus(RowData, isOpenRightColumn) {
         this.setState({ RowData, isOpenRightColumn });
     }
@@ -89,11 +162,19 @@ export default class Accordions extends Component {
         this.setState({ RowData, isOpenModal });
     }
 
-    getAccordionToggle(eventKey, targetOption) {
+    getAccordionToggle(eventKey, targetOption, isColumn) {
+        const {
+            isShowWaterfall,
+            isShowMethod,
+            isShowStatus,
+            isShowMimeType,
+            isShowResourceType,
+            isShowSize,
+        } = this.state;
         const { toggleVarName, title } = targetOption;
         const toggleVar = this.props.getOpenStatus(toggleVarName);
         return (
-            <Card.Header>
+            <Card.Header style={CardHeaderStyle}>
                 <Accordion.Toggle
                     as={Button}
                     variant="link"
@@ -106,6 +187,50 @@ export default class Accordions extends Component {
                         {(toggleVar && <BsCaretUp />) || <BsCaretDown />}
                     </ToggleIconWrapper>
                 </Accordion.Toggle>
+                {isColumn && toggleVar && (
+                    <ChartIconWrapper>
+                        <ToggleButtonWrapper
+                            isShow={isShowMethod}
+                            onClick={this.toggleMethod}
+                        >
+                            <span className="badge badge-primary">Method</span>
+                        </ToggleButtonWrapper>
+                        <ToggleButtonWrapper
+                            isShow={isShowStatus}
+                            onClick={this.toggleStatus}
+                        >
+                            <span className="badge badge-primary">Status</span>
+                        </ToggleButtonWrapper>
+                        <ToggleButtonWrapper
+                            isShow={isShowMimeType}
+                            onClick={this.toggleMimeType}
+                        >
+                            <span className="badge badge-primary">
+                                MIME Type
+                            </span>
+                        </ToggleButtonWrapper>
+                        <ToggleButtonWrapper
+                            isShow={isShowResourceType}
+                            onClick={this.toggleResourceType}
+                        >
+                            <span className="badge badge-primary">
+                                Resource Type
+                            </span>
+                        </ToggleButtonWrapper>
+                        <ToggleButtonWrapper
+                            isShow={isShowSize}
+                            onClick={this.toggleSize}
+                        >
+                            <span className="badge badge-primary">Size</span>
+                        </ToggleButtonWrapper>
+                        <BsFillBarChartFillWrapper
+                            onClick={this.toggleWaterfall}
+                            isShowWaterfall={isShowWaterfall}
+                        >
+                            <BsFillBarChartFill />
+                        </BsFillBarChartFillWrapper>
+                    </ChartIconWrapper>
+                )}
             </Card.Header>
         );
     }
@@ -113,7 +238,16 @@ export default class Accordions extends Component {
     getModalInjectData(har) {
         const { isColumnDisplayRow } = this.props.store;
         const { changeColumnStatus, changeModalStatus } = this;
-        const { RowData, isOpenModal } = this.state;
+        const {
+            RowData,
+            isOpenModal,
+            isShowWaterfall,
+            isShowMethod,
+            isShowStatus,
+            isShowMimeType,
+            isShowResourceType,
+            isShowSize,
+        } = this.state;
         const onChangeStatus = isColumnDisplayRow
             ? changeColumnStatus
             : changeModalStatus;
@@ -122,6 +256,12 @@ export default class Accordions extends Component {
             RowData,
             isOpenModal,
             onChangeStatus,
+            isShowWaterfall,
+            isShowMethod,
+            isShowStatus,
+            isShowMimeType,
+            isShowResourceType,
+            isShowSize,
         };
     }
 
@@ -170,7 +310,8 @@ export default class Accordions extends Component {
                                     <Card>
                                         {getAccordionToggle(
                                             eventKey,
-                                            targetOption
+                                            targetOption,
+                                            isColumn
                                         )}
                                         {getAccordionCollapse(
                                             eventKey,

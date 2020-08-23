@@ -1,6 +1,7 @@
 import React from 'react';
 import { sizes } from '@config';
-import { millisecond2second, date2time } from '@helpers/time';
+import { arrayKey2Column } from '@helpers/array';
+import { ms2s, date2time } from '@helpers/time';
 import { getMainHarViewAccordion } from '@helpers/accordion';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -41,10 +42,14 @@ const byte2SizeString = (byte, unit = 1024, roundDigit = 10) => {
     return `${roundedByte}${size}`;
 };
 
-const getTooltip = text => {
+const getTooltip = (displayText, overlayText = false) => {
+    if (!overlayText) overlayText = displayText;
     return (
-        <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
-            <DisplayText>{text}</DisplayText>
+        <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>{overlayText}</Tooltip>}
+        >
+            <DisplayText>{displayText}</DisplayText>
         </OverlayTrigger>
     );
 };
@@ -54,8 +59,9 @@ export {
     getComponentName,
     getNowPageComponent,
     byte2SizeString,
-    millisecond2second,
+    ms2s,
     date2time,
     getTooltip,
     getMainHarViewAccordion,
+    arrayKey2Column,
 };

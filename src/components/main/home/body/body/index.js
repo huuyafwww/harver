@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
-import { byte2SizeString, getTooltip } from '@helpers';
+import { byte2SizeString, getTooltip, arrayKey2Column } from '@helpers';
 import HarDetailModal from '@components/main/home/body/body/modal';
+import HarResultTimeLine from '@components/main/home/body/body/timeline';
+const parseUrl = require('url-parse');
 
-const TableStyle = {
-    tableLayout: 'fixed',
-    marginBottom: 0,
-};
+const HarResultWrapper = styled.div`
+    display: flex;
+`;
+
+const TableWrapper = styled.div`
+    width: 100%;
+    table.table {
+        margin-bottom: 0;
+    }
+`;
 
 const thStyle = {
     cursor: 'pointer',
 };
+
+const TimelineWrapper = styled.div`
+    width: 50%;
+`;
 
 @inject('store')
 @observer
@@ -35,48 +47,89 @@ export default class HomeCardBodyBody extends Component {
         this.props.onChangeStatus({}, false);
     }
 
-    getRow(data, key) {
-        const { request, response } = data;
-        const byteSize = byte2SizeString(response.content.size);
+    getRow(
+        data,
+        key,
+        har,
+        isShowWaterfall,
+        isShowMethod,
+        isShowStatus,
+        isShowMimeType,
+        isShowResourceType,
+        isShowSize
+    ) {
+        const { request, response, _resourceType } = data;
+        const { url, method } = request;
+        const { status, content } = response;
+        const { size, mimeType } = content;
+        const byteSize = byte2SizeString(size);
+        const parsedUrl = new parseUrl(url);
+        const { hostname } = parsedUrl;
         return (
             <tr key={key} onClick={this.onClick} data-key={key} style={thStyle}>
-                <td>{getTooltip(request.url)}</td>
-                <td>{getTooltip(request.method)}</td>
-                <td>{getTooltip(response.status)}</td>
-                <td>{getTooltip(response.content.mimeType)}</td>
-                <td>{getTooltip(data._resourceType)}</td>
-                <td>{getTooltip(byteSize)}</td>
+                <td>{getTooltip(hostname, url)}</td>
+                {isShowMethod && <td>{getTooltip(method)}</td>}
+                {isShowStatus && <td>{getTooltip(status)}</td>}
+                {isShowMimeType && <td>{getTooltip(mimeType)}</td>}
+                {isShowResourceType && <td>{getTooltip(_resourceType)}</td>}
+                {isShowSize && <td>{getTooltip(byteSize)}</td>}
+                {key === 0 && isShowWaterfall && (
+                    <HarResultTimeLine har={har} />
+                )}
             </tr>
         );
     }
 
     render() {
-        const { closeModal } = this;
-        const { RowData, isOpenModal, har } = this.props;
-        const { isColumnDisplayRow } = this;
+        const { closeModal, isColumnDisplayRow } = this;
+        const {
+            RowData,
+            isOpenModal,
+            har,
+            isShowWaterfall,
+            isShowMethod,
+            isShowStatus,
+            isShowMimeType,
+            isShowResourceType,
+            isShowSize,
+        } = this.props;
+        console.log(this.props);
         return (
-            <div>
-                <Table style={TableStyle} striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Method</th>
-                            <th>Status</th>
-                            <th>MIME Type</th>
-                            <th>Resource Type</th>
-                            <th>Size</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {har.map((data, key) => {
-                            return this.getRow(data, key);
-                        })}
-                    </tbody>
-                </Table>
+            <HarResultWrapper>
+                <TableWrapper>
+                    <Table striped bordered hover responsive>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                {isShowMethod && <th>Method</th>}
+                                {isShowStatus && <th>Status</th>}
+                                {isShowMimeType && <th>MIME Type</th>}
+                                {isShowResourceType && <th>Resource Type</th>}
+                                {isShowSize && <th>Size</th>}
+                                {isShowWaterfall && <th>Waterfall</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {har.map((data, key) => {
+                                return this.getRow(
+                                    data,
+                                    key,
+                                    har,
+                                    isShowWaterfall,
+                                    isShowMethod,
+                                    isShowStatus,
+                                    isShowMimeType,
+                                    isShowResourceType,
+                                    isShowSize
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </TableWrapper>
                 {isOpenModal && !isColumnDisplayRow && (
                     <HarDetailModal RowData={RowData} closeModal={closeModal} />
                 )}
-            </div>
+            </HarResultWrapper>
         );
     }
 }

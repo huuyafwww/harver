@@ -16,7 +16,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpenMenu: false,
+            isOpenMenu: true,
         };
         this.store = this.props.store;
         this.toggleMenu = this.toggleMenu.bind(this);
