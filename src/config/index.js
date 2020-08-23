@@ -6,6 +6,8 @@ const SidebarConfig = require('./sidebar').Config;
 
 const SettingsConfig = require('./settings').Config;
 
+const harResultConfig = require('./harResult').Config;
+
 const dialogOptions = {
     title: 'open folder',
     properties: ['openDirectory'],
@@ -38,4 +40,5 @@ export {
     sizes,
     copyTextConfig,
     timelineChartConfig,
+    harResultConfig,
 };

@@ -3,11 +3,14 @@ import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Accordion, Card, Button, Row, Col } from 'react-bootstrap';
 import { BsCaretDown, BsCaretUp, BsFillBarChartFill } from 'react-icons/bs';
+import { harResultConfig } from '@config';
 import { getComponentName } from '@helpers';
 import HomeCardBodyHeader from '@components/main/home/body/header';
 import HomeCardBodyBody from '@components/main/home/body/body';
 import ColumnPanel from '@components/main/home/body/body/column';
 import FixedToggleMenu from '@components/main/home/body/body/fixedToggleMenu';
+
+const { resultColumn, isShow } = harResultConfig;
 
 const ToggleTitleWrapper = styled.span`
     font-size: 1.3em;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
-import { byte2SizeString, getTooltip } from '@helpers';
+import { byte2SizeString, getTooltip, arrayKey2Column } from '@helpers';
 import HarDetailModal from '@components/main/home/body/body/modal';
 import HarResultTimeLine from '@components/main/home/body/body/timeline';
 const parseUrl = require('url-parse');
@@ -63,7 +63,8 @@ export default class HomeCardBodyBody extends Component {
         const { status, content } = response;
         const { size, mimeType } = content;
         const byteSize = byte2SizeString(size);
-        const { hostname } = new parseUrl(url);
+        const parsedUrl = new parseUrl(url);
+        const { hostname } = parsedUrl;
         return (
             <tr key={key} onClick={this.onClick} data-key={key} style={thStyle}>
                 <td>{getTooltip(hostname, url)}</td>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { sizes } from '@config';
+import { arrayKey2Column } from '@helpers/array';
 import { ms2s, date2time } from '@helpers/time';
 import { getMainHarViewAccordion } from '@helpers/accordion';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -62,4 +63,5 @@ export {
     date2time,
     getTooltip,
     getMainHarViewAccordion,
+    arrayKey2Column,
 };

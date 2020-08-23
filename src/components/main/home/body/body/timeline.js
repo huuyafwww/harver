@@ -61,7 +61,10 @@ export default class HarResultTimeLine extends Component {
         this.getGraphInfo(datas);
         const { graphStart, graphEnd, graphWidth, graphHeight } = this;
         return (
-            <GraphWrapper height={graphHeight}>
+            <GraphWrapper
+                height={graphHeight}
+                xmlns="http://www.w3.org/2000/svg"
+            >
                 {datas.map(this.getSvgRect)}
             </GraphWrapper>
         );
