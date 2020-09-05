@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
+import { binds } from '@helpers';
 import '@styles';
 import Sidebar from '@components/sidebar/';
 import Main from '@components/main/';
@@ -20,14 +21,14 @@ export default class App extends Component {
         };
         const { store, pageSlug } = this.props;
         store.setPageSlug(pageSlug);
-        this.toggleMenu = this.toggleMenu.bind(this);
-        this.onGetSettings = this.onGetSettings.bind(this);
+        this.event = binds(['onGetSettings', 'toggleMenu'], this);
+        console.log(__filename);
     }
 
     componentDidMount() {
         this.ipcRenderer = window.require('electron').ipcRenderer;
         this.ipcRenderer.send('getSettings');
-        this.ipcRenderer.on('getSettingsResult', this.onGetSettings);
+        this.ipcRenderer.on('getSettingsResult', this.event.onGetSettings);
         this.props.store.setIpcRenderer(this.ipcRenderer);
     }
 
@@ -46,7 +47,7 @@ export default class App extends Component {
                 <Sidebar isOpenMenu={this.state.isOpenMenu} />
                 <Main
                     isOpenMenu={this.state.isOpenMenu}
-                    toggleMenu={this.toggleMenu}
+                    toggleMenu={this.event.toggleMenu}
                 />
             </AppWrapper>
         );

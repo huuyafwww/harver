@@ -13,7 +13,12 @@ const TableStyle = {
 export default class HomeCardBodyHeader extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            date: '',
+            url: '',
+            onContentLoad: 0,
+            onLoad: 0,
+        };
     }
 
     componentDidMount() {

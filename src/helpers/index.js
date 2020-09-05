@@ -54,6 +54,14 @@ const getTooltip = (displayText, overlayText = false) => {
     );
 };
 
+const binds = (methods, self) => {
+    const result = {};
+    for (const method of methods) {
+        result[method] = self[method].bind(self);
+    }
+    return result;
+};
+
 export {
     getFileName,
     getComponentName,
@@ -64,4 +72,5 @@ export {
     getTooltip,
     getMainHarViewAccordion,
     arrayKey2Column,
+    binds,
 };
