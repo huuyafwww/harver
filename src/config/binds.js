@@ -1,12 +1,12 @@
-const binds = {
+const bindMethods = {
     src: {
         components: {
-            index: ['onGetSettings', 'toggleMenu'],
+            'index.js': ['onGetSettings', 'toggleMenu'],
             main: {
-                index: ['SelectFile'],
-                fixedToggleMenu: ['onClick'],
+                'index.js': ['SelectFile'],
+                'fixedToggleMenu.js': ['onClick'],
                 settings: {
-                    index: [
+                    'index.js': [
                         'onSave',
                         'onChange',
                         'saveResult',
@@ -14,40 +14,41 @@ const binds = {
                         'getTabContents',
                     ],
                     basic: {
-                        index: ['getForms', 'getItems'],
+                        'index.js': ['getForms', 'getItems'],
                     },
                 },
                 home: {
                     body: {
-                        index: [
+                        'index.js': [
+                            'onIpc',
                             'setHarFileData',
                             'getOpenStatus',
                             'setComponentOptions',
                             'toggleAccordionIcon',
                         ],
-                        accordion: [],
+                        'accordion.js': [],
                         body: {
-                            index: ['getRow', 'onClick', 'closeModal'],
-                            modal: [
+                            'index.js': ['getRow', 'onClick', 'closeModal'],
+                            'modal.js': [
                                 'handleClose',
                                 'getModalHeader',
                                 'getModalBody',
                                 'getModalFooter',
                             ],
-                            timeline: [
+                            'timeline.js': [
                                 'getSvgRect',
                                 'getGraphInfo',
                                 'getGraphSvg',
                                 'createGraphData',
                             ],
-                            fixedToggleMenu: ['onClick'],
+                            'fixedToggleMenu.js': ['onClick'],
                             accordion: {
-                                collapse: [
+                                'collapse.js': [
                                     'getDataHeaderComponent',
                                     'getRequestComponent',
                                     'getResponseComponent',
                                 ],
-                                toggle: [
+                                'toggle.js': [
                                     'onClickAccordionToggle',
                                     'toggleAccordionIcon',
                                     'onCopyData',
@@ -60,3 +61,5 @@ const binds = {
         },
     },
 };
+
+export { bindMethods };

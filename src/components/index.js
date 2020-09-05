@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
-import { binds } from '@helpers';
 import '@styles';
 import Sidebar from '@components/sidebar/';
 import Main from '@components/main/';
+
+const bindMethods = getBinds(__filename);
 
 const AppWrapper = styled.div`
     user-select: text;
@@ -21,8 +23,7 @@ export default class App extends Component {
         };
         const { store, pageSlug } = this.props;
         store.setPageSlug(pageSlug);
-        this.event = binds(['onGetSettings', 'toggleMenu'], this);
-        console.log(__filename);
+        this.event = binds(bindMethods, this);
     }
 
     componentDidMount() {

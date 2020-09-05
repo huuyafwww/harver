@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { SettingsConfig } from '@config';
+
+const bindMethods = getBinds(__filename);
 
 const SettingsWrapper = styled.div``;
 
@@ -13,11 +16,7 @@ export default class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.onSave = this.onSave.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.saveResult = this.saveResult.bind(this);
-        this.getTabItems = this.getTabItems.bind(this);
-        this.getTabContents = this.getTabContents.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     componentDidMount() {
@@ -57,7 +56,7 @@ export default class Settings extends Component {
     }
 
     getTabContents() {
-        const { onChange, onSave, resetStatus } = this;
+        const { onChange, onSave, resetStatus } = this.event;
         const { savedSettings } = this.props.store;
         const { types, components, items } = SettingsConfig;
         return (
@@ -82,7 +81,7 @@ export default class Settings extends Component {
     }
 
     render() {
-        const { getTabItems, getTabContents } = this;
+        const { getTabItems, getTabContents } = this.event;
         return (
             <SettingsWrapper>
                 <Tab.Container defaultActiveKey={SettingsConfig.types[0]}>

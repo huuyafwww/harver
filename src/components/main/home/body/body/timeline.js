@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import moment from 'moment';
 import { timelineChartConfig } from '@config';
+
+const bindMethods = getBinds(__filename);
 
 const { barHeight } = timelineChartConfig;
 
@@ -26,10 +29,7 @@ export default class HarResultTimeLine extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.getSvgRect = this.getSvgRect.bind(this);
-        this.getGraphInfo = this.getGraphInfo.bind(this);
-        this.getGraphSvg = this.getGraphSvg.bind(this);
-        this.createGraphData = this.createGraphData.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     getSvgRect(data, index) {
@@ -58,14 +58,14 @@ export default class HarResultTimeLine extends Component {
     }
 
     getGraphSvg(datas, dataCount) {
-        this.getGraphInfo(datas);
+        this.event.getGraphInfo(datas);
         const { graphStart, graphEnd, graphWidth, graphHeight } = this;
         return (
             <GraphWrapper
                 height={graphHeight}
                 xmlns="http://www.w3.org/2000/svg"
             >
-                {datas.map(this.getSvgRect)}
+                {datas.map(this.event.getSvgRect)}
             </GraphWrapper>
         );
     }
@@ -80,11 +80,11 @@ export default class HarResultTimeLine extends Component {
 
     render() {
         const { har } = this.props;
-        const datas = har.map(this.createGraphData);
+        const datas = har.map(this.event.createGraphData);
         const dataCount = datas.length;
         return (
             <td rowSpan={dataCount} id="waterfallGraph">
-                {this.getGraphSvg(datas, dataCount)}
+                {this.event.getGraphSvg(datas, dataCount)}
             </td>
         );
     }

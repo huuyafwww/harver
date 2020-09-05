@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { getMainHarViewAccordion, binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
-import { getMainHarViewAccordion } from '@helpers';
+
+const bindMethods = getBinds(__filename);
 
 @inject('store')
 @observer
@@ -12,10 +14,7 @@ export default class HarDetailModal extends Component {
         this.state = {
             show: true,
         };
-        this.handleClose = this.handleClose.bind(this);
-        this.getModalHeader = this.getModalHeader.bind(this);
-        this.getModalBody = this.getModalBody.bind(this);
-        this.getModalFooter = this.getModalFooter.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     handleClose() {
@@ -43,7 +42,7 @@ export default class HarDetailModal extends Component {
     }
 
     getModalFooter() {
-        const { handleClose } = this;
+        const { handleClose } = this.event;
         return (
             <Modal.Footer>
                 <Button variant="primary" onClick={handleClose}>
@@ -54,7 +53,12 @@ export default class HarDetailModal extends Component {
     }
 
     render() {
-        const { handleClose } = this;
+        const {
+            handleClose,
+            getModalHeader,
+            getModalBody,
+            getModalFooter,
+        } = this.event;
         const { show } = this.state;
         const { request, response } = this.props.RowData;
         return (
@@ -66,9 +70,9 @@ export default class HarDetailModal extends Component {
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
                 >
-                    {this.getModalHeader()}
-                    {this.getModalBody([request, response])}
-                    {this.getModalFooter()}
+                    {getModalHeader()}
+                    {getModalBody([request, response])}
+                    {getModalFooter()}
                 </Modal>
             </div>
         );

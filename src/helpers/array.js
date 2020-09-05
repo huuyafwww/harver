@@ -1,3 +1,5 @@
+import { bindMethods } from '@config/binds';
+
 const arrayKey2Column = (targetArray, searchArray) => {
     for (const searchKey of searchArray) {
         if (targetArray[searchKey]) {
@@ -9,4 +11,8 @@ const arrayKey2Column = (targetArray, searchArray) => {
     return targetArray;
 };
 
-export { arrayKey2Column };
+const getBinds = filename => {
+    return arrayKey2Column(bindMethods, filename.split('/'));
+};
+
+export { arrayKey2Column, getBinds };

@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
-import { byte2SizeString, getTooltip, arrayKey2Column } from '@helpers';
+import {
+    byte2SizeString,
+    getTooltip,
+    arrayKey2Column,
+    binds,
+    getBinds,
+} from '@helpers';
 import HarDetailModal from '@components/main/home/body/body/modal';
 import HarResultTimeLine from '@components/main/home/body/body/timeline';
 const parseUrl = require('url-parse');
+
+const bindMethods = getBinds(__filename);
 
 const HarResultWrapper = styled.div`
     display: flex;
@@ -33,9 +41,7 @@ export default class HomeCardBodyBody extends Component {
         super(props);
         this.state = {};
         this.ColumnDisplayRow = this.props.store.isColumnDisplayRow;
-        this.getRow = this.getRow.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     onClick(e) {
@@ -66,7 +72,12 @@ export default class HomeCardBodyBody extends Component {
         const parsedUrl = new parseUrl(url);
         const { hostname } = parsedUrl;
         return (
-            <tr key={key} onClick={this.onClick} data-key={key} style={thStyle}>
+            <tr
+                key={key}
+                onClick={this.event.onClick}
+                data-key={key}
+                style={thStyle}
+            >
                 <td>{getTooltip(hostname, url)}</td>
                 {isShowMethod && <td>{getTooltip(method)}</td>}
                 {isShowStatus && <td>{getTooltip(status)}</td>}
@@ -81,7 +92,8 @@ export default class HomeCardBodyBody extends Component {
     }
 
     render() {
-        const { closeModal, isColumnDisplayRow } = this;
+        const { closeModal } = this.event;
+        const { isColumnDisplayRow } = this;
         const {
             RowData,
             isOpenModal,
@@ -93,7 +105,6 @@ export default class HomeCardBodyBody extends Component {
             isShowResourceType,
             isShowSize,
         } = this.props;
-        console.log(this.props);
         return (
             <HarResultWrapper>
                 <TableWrapper>
@@ -111,7 +122,7 @@ export default class HomeCardBodyBody extends Component {
                         </thead>
                         <tbody>
                             {har.map((data, key) => {
-                                return this.getRow(
+                                return this.event.getRow(
                                     data,
                                     key,
                                     har,

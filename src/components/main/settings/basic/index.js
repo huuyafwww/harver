@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { Card, Button, Form } from 'react-bootstrap';
+
+const bindMethods = getBinds(__filename);
 
 const SaveButtonWrapper = styled.div`
     text-align: right;
@@ -13,8 +16,7 @@ export default class Basic extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.getForms = this.getForms.bind(this);
-        this.getItems = this.getItems.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     getItems(label, input, span) {
@@ -50,7 +52,7 @@ export default class Basic extends Component {
                         <Form.Group controlId={form.groupControlId} key={key}>
                             <Form.Label>{form.labelValue}</Form.Label>
                             <div className={wrapper.className}>
-                                {this.getItems(label, input, span)}
+                                {this.event.getItems(label, input, span)}
                             </div>
                         </Form.Group>
                     );
@@ -65,7 +67,7 @@ export default class Basic extends Component {
             <Card>
                 <Card.Body>
                     <Card.Title>Basic</Card.Title>
-                    {this.getForms()}
+                    {this.event.getForms()}
                     <SaveButtonWrapper>
                         <Button variant="primary" onClick={onSave}>
                             保存

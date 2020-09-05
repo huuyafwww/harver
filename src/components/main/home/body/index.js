@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import Accordions from '@components/main/home/body/accordion';
+
+const bindMethods = getBinds(__filename);
 
 @inject('store')
 @observer
@@ -15,20 +18,16 @@ export default class HomeCardBody extends Component {
             },
         };
         this.store = this.props.store;
-        this.onIpc = this.onIpc.bind(this);
-        this.setHarFileData = this.setHarFileData.bind(this);
-        this.getOpenStatus = this.getOpenStatus.bind(this);
-        this.setComponentOptions = this.setComponentOptions.bind(this);
-        this.toggleAccordionIcon = this.toggleAccordionIcon.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     componentDidMount() {
         this.ipcRenderer = window.require('electron').ipcRenderer;
-        this.ipcRenderer.on('fileData', this.onIpc);
+        this.ipcRenderer.on('fileData', this.event.onIpc);
     }
 
     onIpc(event, harFileData) {
-        harFileData !== undefined && this.setHarFileData(harFileData);
+        harFileData !== undefined && this.event.setHarFileData(harFileData);
     }
 
     setHarFileData(harData, isLoaded = true) {
@@ -63,15 +62,20 @@ export default class HomeCardBody extends Component {
     }
 
     render() {
+        const {
+            setComponentOptions,
+            toggleAccordionIcon,
+            getOpenStatus,
+        } = this.event;
         const { isLoaded } = this.state;
-        isLoaded && this.setComponentOptions();
+        isLoaded && setComponentOptions();
         return (
             <div>
                 {isLoaded && (
                     <Accordions
                         ComponentOptions={this.ComponentOptions}
-                        toggleAccordionIcon={this.toggleAccordionIcon}
-                        getOpenStatus={this.getOpenStatus}
+                        toggleAccordionIcon={toggleAccordionIcon}
+                        getOpenStatus={getOpenStatus}
                     />
                 )}
             </div>

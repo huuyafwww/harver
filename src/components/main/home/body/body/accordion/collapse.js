@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { getTooltip, binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { Accordion, Card, Table } from 'react-bootstrap';
-import { getTooltip } from '@helpers';
+
+const bindMethods = getBinds(__filename);
 
 const CardBodyStyle = {
     padding: 0,
@@ -19,12 +21,10 @@ export default class AccordionCollapse extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.getDataHeaderComponent = this.getDataHeaderComponent.bind(this);
-        this.getRequestComponent = this.getRequestComponent.bind(this);
-        this.getResponseComponent = this.getResponseComponent.bind(this);
+        this.event = binds(bindMethods, this);
         this.showDataMethods = [
-            this.getRequestComponent,
-            this.getResponseComponent,
+            this.event.getRequestComponent,
+            this.event.getResponseComponent,
         ];
     }
 
@@ -55,12 +55,12 @@ export default class AccordionCollapse extends Component {
 
     getRequestComponent(requestData) {
         const { headers } = requestData;
-        return <div>{this.getDataHeaderComponent(headers)}</div>;
+        return <div>{this.event.getDataHeaderComponent(headers)}</div>;
     }
 
     getResponseComponent(responseData) {
         const { headers } = responseData;
-        return <div>{this.getDataHeaderComponent(headers)}</div>;
+        return <div>{this.event.getDataHeaderComponent(headers)}</div>;
     }
 
     render() {

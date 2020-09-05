@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs';
+
+const bindMethods = getBinds(__filename);
 
 const FixedToggleMenuWrapper = styled.div`
     font-size: 1.5em;
@@ -24,7 +27,7 @@ export default class FixedToggleMenu extends Component {
         super(props);
         this.state = {};
         this.position = this.props.position;
-        this.onClick = this.onClick.bind(this);
+        this.event = binds(bindMethods, this);
     }
 
     onClick() {
@@ -41,7 +44,7 @@ export default class FixedToggleMenu extends Component {
         const isLeftAlign = position === 'Left';
         return (
             <FixedToggleMenuWrapper isLeftAlign={isLeftAlign}>
-                <IconComponent onClick={this.onClick} />
+                <IconComponent onClick={this.event.onClick} />
             </FixedToggleMenuWrapper>
         );
     }

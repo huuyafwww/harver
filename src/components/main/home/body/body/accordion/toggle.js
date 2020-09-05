@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { binds, getBinds } from '@helpers';
 import styled from 'styled-components';
 import { Button, Accordion, Card } from 'react-bootstrap';
 import { BsCaretDown, BsCaretUp, BsFiles } from 'react-icons/bs';
 import { ToastContainer, toast } from 'react-toastify';
 import { copyTextConfig } from '@config';
+
+const bindMethods = getBinds(__filename);
 
 const toggleVarNames = ['isOpenRequestPanel', 'isOpenResponsePanel'];
 
@@ -38,9 +41,7 @@ export default class HarDetailModal extends Component {
                 isOpenResponsePanel: false,
             },
         };
-        this.onClickAccordionToggle = this.onClickAccordionToggle.bind(this);
-        this.toggleAccordionIcon = this.toggleAccordionIcon.bind(this);
-        this.onCopyData = this.onCopyData.bind(this);
+        this.event = binds(bindMethods, this);
         this.clipboard = window.require('electron').clipboard;
     }
 
@@ -62,10 +63,11 @@ export default class HarDetailModal extends Component {
 
     onClickAccordionToggle(e) {
         const { toggleVarName } = e.currentTarget.dataset;
-        this.toggleAccordionIcon(toggleVarName);
+        this.event.toggleAccordionIcon(toggleVarName);
     }
 
     render() {
+        const { onClickAccordionToggle, onCopyData } = this.event;
         const { eventKey, showDataLabel } = this.props;
         const toggleVarName = toggleVarNames[eventKey];
         const toggleVar = this.state[toggleVarName];
@@ -75,7 +77,7 @@ export default class HarDetailModal extends Component {
                     as={Button}
                     variant="link"
                     eventKey={eventKey}
-                    onClick={this.onClickAccordionToggle}
+                    onClick={onClickAccordionToggle}
                     data-toggle-var-name={toggleVarName}
                 >
                     <ToggleTitleWrapper>{showDataLabel}</ToggleTitleWrapper>
@@ -83,7 +85,7 @@ export default class HarDetailModal extends Component {
                         {(toggleVar && <BsCaretUp />) || <BsCaretDown />}
                     </ToggleIconWrapper>
                 </Accordion.Toggle>
-                <CopyIconWrapper onClick={this.onCopyData}>
+                <CopyIconWrapper onClick={onCopyData}>
                     <BsFiles />
                 </CopyIconWrapper>
                 <ToastContainer />
