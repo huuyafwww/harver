@@ -2,7 +2,7 @@ import { bindMethods } from '@config/binds';
 
 const arrayKey2Column = (targetArray, searchArray) => {
     for (const searchKey of searchArray) {
-        if (targetArray[searchKey]) {
+        if (targetArray.hasOwnProperty(searchKey)) {
             targetArray = targetArray[searchKey];
             continue;
         }

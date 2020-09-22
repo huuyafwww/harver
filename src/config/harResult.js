@@ -1,36 +1,30 @@
 const Config = {
-    resultColumn: [
-        {
+    resultColumn: {
+        Url: {
             title: 'Url',
             params: ['request', 'url'],
-            state: 'Url',
         },
-        {
+        Method: {
             title: 'Method',
             params: ['request', 'method'],
-            state: 'Method',
         },
-        {
+        Status: {
             title: 'Status',
             params: ['response', 'status'],
-            state: 'Status',
         },
-        {
+        MimeType: {
             title: 'MIME Type',
             params: ['response', 'content', 'mimeType'],
-            state: 'MimeType',
         },
-        {
+        ResourceType: {
             title: 'Resource Type',
             params: ['_resourceType'],
-            state: 'ResourceType',
         },
-        {
+        Size: {
             title: 'Size',
             params: ['response', 'content', 'size'],
-            state: 'Size',
         },
-    ],
+    },
     isShow: {
         Url: true,
         Method: true,
@@ -38,6 +32,30 @@ const Config = {
         MimeType: true,
         ResourceType: true,
         Size: true,
+        Waterfall: false,
+    },
+    toggleIcon: {
+        Url: {
+            label: 'Url',
+        },
+        Method: {
+            label: 'Method',
+        },
+        Status: {
+            label: 'Status',
+        },
+        MimeType: {
+            label: 'MIME Type',
+        },
+        ResourceType: {
+            label: 'Resource Type',
+        },
+        Size: {
+            label: 'Size',
+        },
+        Waterfall: {
+            label: 'Waterfall',
+        },
     },
 };
 

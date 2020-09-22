@@ -9,10 +9,12 @@ import {
     binds,
     getBinds,
 } from '@helpers';
+import { harResultConfig } from '@config';
 import HarDetailModal from '@components/main/home/body/body/modal';
 import HarResultTimeLine from '@components/main/home/body/body/timeline';
 const parseUrl = require('url-parse');
 
+const { isShow, resultColumn, toggleIcon } = harResultConfig;
 const bindMethods = getBinds(__filename);
 
 const HarResultWrapper = styled.div`
@@ -53,86 +55,76 @@ export default class HomeCardBodyBody extends Component {
         this.props.onChangeStatus({}, false);
     }
 
-    getRow(
-        data,
-        key,
-        har,
-        isShowWaterfall,
-        isShowMethod,
-        isShowStatus,
-        isShowMimeType,
-        isShowResourceType,
-        isShowSize
-    ) {
-        const { request, response, _resourceType } = data;
-        const { url, method } = request;
-        const { status, content } = response;
-        const { size, mimeType } = content;
-        const byteSize = byte2SizeString(size);
-        const parsedUrl = new parseUrl(url);
-        const { hostname } = parsedUrl;
+    getRow(data, trKey) {
+        const { getTableBodyItems } = this.event;
         return (
             <tr
-                key={key}
+                key={trKey}
                 onClick={this.event.onClick}
-                data-key={key}
+                data-key={trKey}
                 style={thStyle}
             >
-                <td>{getTooltip(hostname, url)}</td>
-                {isShowMethod && <td>{getTooltip(method)}</td>}
-                {isShowStatus && <td>{getTooltip(status)}</td>}
-                {isShowMimeType && <td>{getTooltip(mimeType)}</td>}
-                {isShowResourceType && <td>{getTooltip(_resourceType)}</td>}
-                {isShowSize && <td>{getTooltip(byteSize)}</td>}
-                {key === 0 && isShowWaterfall && (
-                    <HarResultTimeLine har={har} />
-                )}
+                {getTableBodyItems(data, trKey)}
             </tr>
         );
     }
 
+    getTableBodyItems(data, trKey) {
+        const { har } = this.props;
+        return (
+            <>
+                {Object.keys(isShow).map((varName, key) => {
+                    const isShowItem = this.props[varName];
+                    if (varName !== 'Waterfall') {
+                        const params = resultColumn[varName].params;
+                        const itemData = arrayKey2Column(data, params);
+                        let showData = getTooltip(itemData);
+                        if (varName === 'Url') {
+                            const parsedUrl = new parseUrl(itemData);
+                            const { hostname } = parsedUrl;
+                            showData = getTooltip(hostname, itemData);
+                        }
+                        if (varName === 'Size') {
+                            const byteSize = byte2SizeString(itemData);
+                            showData = getTooltip(byteSize);
+                        }
+                        return isShowItem && <td key={key}>{showData}</td>;
+                    }
+                    return (
+                        trKey === 0 &&
+                        isShowItem && <HarResultTimeLine key={key} har={har} />
+                    );
+                })}
+            </>
+        );
+    }
+
+    getTableHeadItems() {
+        return (
+            <>
+                {Object.keys(isShow).map((varName, key) => {
+                    const isShowItem = this.props[varName];
+                    const itemLabel = toggleIcon[varName].label;
+                    return isShowItem && <th key={key}>{itemLabel}</th>;
+                })}
+            </>
+        );
+    }
+
     render() {
-        const { closeModal } = this.event;
+        const { closeModal, getRow, getTableHeadItems } = this.event;
         const { isColumnDisplayRow } = this;
-        const {
-            RowData,
-            isOpenModal,
-            har,
-            isShowWaterfall,
-            isShowMethod,
-            isShowStatus,
-            isShowMimeType,
-            isShowResourceType,
-            isShowSize,
-        } = this.props;
+        const { RowData, isOpenModal, har } = this.props;
         return (
             <HarResultWrapper>
                 <TableWrapper>
                     <Table striped bordered hover responsive>
                         <thead>
-                            <tr>
-                                <th>Name</th>
-                                {isShowMethod && <th>Method</th>}
-                                {isShowStatus && <th>Status</th>}
-                                {isShowMimeType && <th>MIME Type</th>}
-                                {isShowResourceType && <th>Resource Type</th>}
-                                {isShowSize && <th>Size</th>}
-                                {isShowWaterfall && <th>Waterfall</th>}
-                            </tr>
+                            <tr>{getTableHeadItems()}</tr>
                         </thead>
                         <tbody>
                             {har.map((data, key) => {
-                                return this.event.getRow(
-                                    data,
-                                    key,
-                                    har,
-                                    isShowWaterfall,
-                                    isShowMethod,
-                                    isShowStatus,
-                                    isShowMimeType,
-                                    isShowResourceType,
-                                    isShowSize
-                                );
+                                return getRow(data, key);
                             })}
                         </tbody>
                     </Table>
